@@ -1,0 +1,46 @@
+from django.contrib import admin
+from .models import Eixo
+from .models import Programa
+from .models import Acao
+from .models import Secretaria
+from .models import Orgao
+from .models import Responsavel
+from .models import Iniciativa
+from .models import Monitoramento
+import csv
+from django.http import HttpResponse
+
+admin.site.register(Eixo)
+admin.site.register(Programa)
+
+admin.site.site_header = 'Painel de Controle' # Muda do site Admin
+
+# Ação #
+
+@admin.register(Acao) # chama diretamente
+class AcaoAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("programa", "acao",)
+    list_filter = ("programa",) # cria filtros
+    # search_fields = ("iniciativa", "status",)
+
+# Secretaria #
+admin.site.register(Secretaria)
+admin.site.register(Orgao)
+
+# Reponsável #
+class ResponsavelAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("nome", "secretaria",)
+
+admin.site.register(Responsavel, ResponsavelAdmin)
+
+# Iniciativa #
+admin.site.register(Iniciativa)
+
+# Monitoramento #
+@admin.register(Monitoramento) # chama diretamente
+class MonitoramentoAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("iniciativa", "status", "execucao_fisica",)
+    list_editable = ("status", "execucao_fisica",) # permite editar do preview
+    list_filter = ("status",) # cria filtros
+    # search_fields = ("iniciativa", "status",)
+# admin.site.register(Monitoramento, MonitoramentoAdmin) sintaxe sem @ e com .site
