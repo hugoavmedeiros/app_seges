@@ -1,0 +1,41 @@
+python -m venv env # criar ambiente virtual
+.\env\Scripts\Activate.ps1 # ativar ambiente virtual / deactivate # desativar
+django-admin.exe startproject sitePainel . # CRIAR ESTRUTURA
+python manage.py migrate # criar banco do site
+python manage.py startapp appPainel # criar app
+python manage.py makemigrations appPainel # criar banco do app com base nos modelos
+python manage.py migrate appPainel # migrar banco do app com base nos modelos
+python manage.py createsuperuser # criar usuário
+python manage.py runserver # rodar servidor
+
+# Configurações
+	STATIC_ROOT = BASE_DIR / 'static'
+	ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+	INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'appPainel',
+]
+
+# Para recuperar campo de outro modelo, siga o exemplo abaixo
+iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE)
+
+# Return self permite retornar campos do próprio modelo
+
+# Para alterar o que é mostrado no admi, siga o exemplo abaixo
+
+# Requirements
+python -m pip install django
+pip install django-simple-history
+pip install -U django-jazzmin
+
+# GIT  
+C:\Users\hugo.vasconcelos\Documents\painel_de_controle
+git add .
+git commit -m "[mensagem do commit]"
+git remote add origin https://github.com/<your-github-username>/my-first-blog.git [OU] git remote set-url origin git@github.com:user/repository.git
+git push -u origin main
