@@ -10,6 +10,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 from django.core.validators import RegexValidator
 from multiselectfield import MultiSelectField
+from django.utils.translation import gettext as _
 
 PERCENTAGE_VALIDATOR = [MinValueValidator(0), MaxValueValidator(100)]
 
@@ -117,6 +118,23 @@ class Orgao(models.Model):
     class Meta:
         verbose_name_plural = "Órgãos"   
 
+class Municipio(models.Model):
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now=True)
+    nome = models.CharField(max_length=100)
+    codigo = models.CharField(max_length=7)
+    history = HistoricalRecords()
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        verbose_name_plural = "Municípios"  
+
 class Responsavel(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True)
@@ -151,7 +169,7 @@ class Iniciativa(models.Model):
     tema = models.TextField()
     descricao = models.TextField()
     populacao = models.IntegerField()
-    #municipio = MultiSelectField(choices=municipio_lista, default= 'Recife')
+    municipio = models.ManyToManyField(Municipio, default='Recife')
     history = HistoricalRecords()
 
     def publish(self):
@@ -183,7 +201,7 @@ class Monitoramento(models.Model):
     history = HistoricalRecords()
 
     class Meta:
-        verbose_name_plural = "Monitoramento"
+        verbose_name_plural = "Monitoramento Iniciativa"
         ordering = ("iniciativa",) # ordena pelo nome da iniciativa
 
     def publish(self):
@@ -206,7 +224,7 @@ class Etapa(models.Model):
     tema = models.TextField()
     descricao = models.TextField()
     populacao = models.IntegerField()
-    #municipio = MultiSelectField(choices=municipio_lista, default= 'Recife')
+    municipio = models.ManyToManyField(Municipio, default='Recife')
     history = HistoricalRecords()
 
     def publish(self):
@@ -238,7 +256,7 @@ class MonitoramentoEtapa(models.Model):
     history = HistoricalRecords()
 
     class Meta:
-        verbose_name_plural = "Monitoramento"
+        verbose_name_plural = "Monitoramento Etapa"
         ordering = ("etapa",) # ordena pelo nome da iniciativa
 
     def publish(self):

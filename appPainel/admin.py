@@ -5,6 +5,7 @@ from .models import Acao
 from .models import Secretaria
 from .models import Orgao
 from .models import Responsavel
+from .models import Municipio
 from .models import Iniciativa
 from .models import Monitoramento
 from .models import Etapa
@@ -34,6 +35,12 @@ class ResponsavelAdmin(admin.ModelAdmin): # lista_display permite mostrar campos
     list_display = ("nome", "secretaria",)
 
 admin.site.register(Responsavel, ResponsavelAdmin)
+
+@admin.register(Municipio) # chama diretamente
+class MunicipioAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("nome", "codigo",)
+    list_filter = ("nome",) # cria filtros
+    # search_fields = ("iniciativa", "status",)
 
 # Iniciativa #
 admin.site.register(Iniciativa)
