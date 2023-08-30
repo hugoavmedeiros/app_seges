@@ -9,6 +9,7 @@ from simple_history.models import HistoricalRecords
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 from django.core.validators import RegexValidator
+from multiselectfield import MultiSelectField
 
 PERCENTAGE_VALIDATOR = [MinValueValidator(0), MaxValueValidator(100)]
 
@@ -150,6 +151,7 @@ class Iniciativa(models.Model):
     tema = models.TextField()
     descricao = models.TextField()
     populacao = models.IntegerField()
+    #municipio = MultiSelectField(choices=municipio_lista, default= 'Recife')
     history = HistoricalRecords()
 
     def publish(self):
@@ -176,13 +178,68 @@ class Monitoramento(models.Model):
         max_digits=3, decimal_places=1, default=Decimal(0), validators=PERCENTAGE_VALIDATOR
         )
     observacao = models.TextField()
-    link_fotos = models.CharField(max_length=500)
-    link_repositorio = models.CharField(max_length=500)    
+    link_fotos = models.URLField(max_length=500)
+    link_repositorio = models.URLField(max_length=500)    
     history = HistoricalRecords()
 
     class Meta:
         verbose_name_plural = "Monitoramento"
         ordering = ("iniciativa",) # ordena pelo nome da iniciativa
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.status
+    
+class Etapa(models.Model):
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now=True)
+    #eixo = models.ForeignKey(Eixo, on_delete=models.CASCADE)
+    #programa = models.ForeignKey(Programa, on_delete=models.CASCADE)
+    iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE)
+    responsavel = models.ForeignKey(Responsavel, on_delete=models.CASCADE)
+    etapa = models.TextField(default='teste')
+    etapa_cd = models.CharField(max_length=4)
+    tipo = models.CharField(max_length=255, choices=tipo_lista)    
+    tema = models.TextField()
+    descricao = models.TextField()
+    populacao = models.IntegerField()
+    #municipio = MultiSelectField(choices=municipio_lista, default= 'Recife')
+    history = HistoricalRecords()
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.etapa
+
+class MonitoramentoEtapa(models.Model):
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now=True)
+    #eixo = models.ForeignKey(Eixo, on_delete=models.CASCADE)
+    #programa = models.ForeignKey(Programa, on_delete=models.CASCADE)
+    #acao = models.ForeignKey(Acao, on_delete=models.CASCADE)
+    #secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE)
+    etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE)
+    status = models.CharField(max_length=255, choices=status_lista)
+    data_inicio_planejado = models.DateTimeField(default=timezone.now)
+    data_inicio_atualizado = models.DateTimeField(blank=True, null=True)
+    data_termino_planejado = models.DateTimeField(default=timezone.now)
+    data_termino_atualizado = models.DateTimeField(blank=True, null=True)
+    execucao_fisica = models.DecimalField(
+        max_digits=3, decimal_places=1, default=Decimal(0), validators=PERCENTAGE_VALIDATOR
+        )
+    observacao = models.TextField()
+    link_fotos = models.URLField(max_length=500)
+    link_repositorio = models.URLField(max_length=500)    
+    history = HistoricalRecords()
+
+    class Meta:
+        verbose_name_plural = "Monitoramento"
+        ordering = ("etapa",) # ordena pelo nome da iniciativa
 
     def publish(self):
         self.published_date = timezone.now()

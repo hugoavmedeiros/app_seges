@@ -7,6 +7,8 @@ from .models import Orgao
 from .models import Responsavel
 from .models import Iniciativa
 from .models import Monitoramento
+from .models import Etapa
+from .models import MonitoramentoEtapa
 import csv
 from django.http import HttpResponse
 
@@ -40,6 +42,17 @@ admin.site.register(Iniciativa)
 @admin.register(Monitoramento) # chama diretamente
 class MonitoramentoAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("iniciativa", "status", "execucao_fisica",)
+    list_editable = ("status", "execucao_fisica",) # permite editar do preview
+    list_filter = ("status",) # cria filtros
+    # search_fields = ("iniciativa", "status",)
+
+# Etapa #
+admin.site.register(Etapa)
+
+# Monitoramento Etapa#
+@admin.register(MonitoramentoEtapa) # chama diretamente
+class MonitoramentoEtapaAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("etapa", "status", "execucao_fisica",)
     list_editable = ("status", "execucao_fisica",) # permite editar do preview
     list_filter = ("status",) # cria filtros
     # search_fields = ("iniciativa", "status",)
