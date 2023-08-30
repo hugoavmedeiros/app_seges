@@ -9,7 +9,6 @@ from simple_history.models import HistoricalRecords
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 from django.core.validators import RegexValidator
-from multiselectfield import MultiSelectField
 from django.utils.translation import gettext as _
 
 PERCENTAGE_VALIDATOR = [MinValueValidator(0), MaxValueValidator(100)]
