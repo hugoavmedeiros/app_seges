@@ -31,4 +31,6 @@ $RECYCLE.BIN/
 .history/
 *.code-workspace
 
+# Extras
 .passos
+municipios.csv
