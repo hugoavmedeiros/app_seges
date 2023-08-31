@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -77,14 +76,8 @@ WSGI_APPLICATION = 'sitePainel.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
 
-if os.environ.get('PRODUCTION'):
+if os.environ.get('ENV') == "PROD":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -95,7 +88,8 @@ if os.environ.get('PRODUCTION'):
             'PORT': '5432',
         }
     }
-else:
+
+elif os.environ.get('ENV') == "DEV":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -104,6 +98,13 @@ else:
             'PASSWORD': 'post1234',
             'HOST': 'localhost',
             'PORT': '5432',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 

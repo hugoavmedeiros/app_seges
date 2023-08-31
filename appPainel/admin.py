@@ -13,7 +13,10 @@ from .models import MonitoramentoEtapa
 import csv
 from django.http import HttpResponse
 
-admin.site.register(Eixo)
+@admin.register(Eixo) # chama diretamente
+class EixoAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("eixo_estrategico_cd", "eixo_estrategico",)
+
 admin.site.register(Programa)
 
 admin.site.site_header = 'Painel de Controle' # Muda do site Admin
@@ -38,7 +41,8 @@ admin.site.register(Responsavel, ResponsavelAdmin)
 
 @admin.register(Municipio) # chama diretamente
 class MunicipioAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
-    list_display = ("nome", "codigo",)
+    ordering = ('nome',)
+    list_display = ("codigo", "nome",)
     list_filter = ("nome",) # cria filtros
     # search_fields = ("iniciativa", "status",)
 
