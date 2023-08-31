@@ -3,6 +3,7 @@ astroid==2.15.6
 colorama==0.4.6
 dill==0.3.7
 Django==4.2.4
+django-jazzmin==2.6.0
 django-simple-history==3.3.0
 djangorestframework==3.14.0
 isort==5.12.0
@@ -11,6 +12,7 @@ mccabe==0.7.0
 numpy==1.25.2
 pandas==2.0.3
 platformdirs==3.10.0
+psycopg2==2.9.7
 pylint==2.17.5
 python-dateutil==2.8.2
 pytz==2023.3
