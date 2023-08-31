@@ -35,11 +35,21 @@ status_lista = (
     ('SUSPENSA','SUSPENSA'),
 )
 
+tipo_programa_lista = (
+    ('Finalístico','Finalístico'),
+    ('Gestão, Manutenção e Serviços ao Estado','Gestão, Manutenção e Serviços ao Estado'),
+)
+
+tipo_acao_lista = (
+    ('Atividade','Atividade'),
+    ('Operação Especial','Operação Especial'),
+    ('Projeto','Projeto'),
+)
+
 class Eixo(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
     eixo_estrategico = models.CharField(_("Nome do Eixo"), max_length=255)
     eixo_estrategico_cd = models.CharField(_("Código do Eixo"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
+    descricao = models.TextField(verbose_name = _("Descrição"))
     history = HistoricalRecords()
 
     def publish(self):
@@ -50,11 +60,11 @@ class Eixo(models.Model):
         return self.eixo_estrategico + " " + self.eixo_estrategico_cd
 
 class Programa(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
     eixo_estrategico = models.ForeignKey(Eixo, on_delete=models.CASCADE, verbose_name = _("Nome do Eixo"))
     programa = models.CharField(verbose_name=_("Nome do Programa"), max_length=255)
     programa_cd = models.CharField(_("Código do Programa"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
+    tipo = models.CharField(max_length=255, choices=tipo_programa_lista, verbose_name = _("Tipo"))
+    descricao = models.TextField(verbose_name = _("Descrição"))
     history = HistoricalRecords()
 
     def publish(self):
@@ -65,11 +75,11 @@ class Programa(models.Model):
         return self.programa + " " + self.programa_cd
 
 class Acao(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
     programa = models.ForeignKey(Programa, on_delete=models.CASCADE, verbose_name = _("Nome do Programa"))
     acao = models.CharField(max_length=255, verbose_name = _("Nome da Ação"))
     acao_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código da Ação"))
+    tipo = models.CharField(max_length=255, choices=tipo_acao_lista, verbose_name = _("Tipo"))
+    descricao = models.TextField(verbose_name = _("Descrição"))
     history = HistoricalRecords()
 
     def publish(self):
@@ -83,8 +93,6 @@ class Acao(models.Model):
         verbose_name_plural = "Ações"
 
 class Secretaria(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
     secretaria = models.CharField(max_length=255, verbose_name = _("Nome da Secretaria"))
     secretaria_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código da Secretaria"))
     history = HistoricalRecords()
@@ -100,8 +108,6 @@ class Secretaria(models.Model):
         verbose_name_plural = "Secretarias"
 
 class Orgao(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
     secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE, verbose_name = _("Nome da Secretaria"))
     orgao = models.CharField(max_length=255, verbose_name = _("Nome do Órgão"))
     orgao_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código do Órgão"))
@@ -118,8 +124,6 @@ class Orgao(models.Model):
         verbose_name_plural = "Órgãos"   
 
 class Municipio(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
     nome = models.CharField(max_length=100, verbose_name = _("Nome do Município"))
     codigo = models.CharField(max_length=7, verbose_name = _("Código do Município"))
     history = HistoricalRecords()
@@ -135,8 +139,6 @@ class Municipio(models.Model):
         verbose_name_plural = "Municípios"  
 
 class Responsavel(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
     secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE, verbose_name = _("Nome da Secretaria"))
     orgao = models.ForeignKey(Orgao, on_delete=models.CASCADE, blank=True, null=True, verbose_name = _("Nome do Órgão"))
     nome = models.CharField(max_length=255, verbose_name = _("Nome do(a) Responsável"))
@@ -153,10 +155,6 @@ class Responsavel(models.Model):
         verbose_name_plural = "Responsáveis"   
 
 class Iniciativa(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
-    #eixo = models.ForeignKey(Eixo, on_delete=models.CASCADE)
-    #programa = models.ForeignKey(Programa, on_delete=models.CASCADE)
     acao = models.ForeignKey(Acao, on_delete=models.CASCADE, verbose_name = _("Nome da Ação"))
     secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE, verbose_name = _("Nome da Secretaria"))
     orgao = models.ForeignKey(Orgao, on_delete=models.CASCADE, blank=True, null=True, verbose_name = _("Nome do Órgão"))
@@ -179,12 +177,6 @@ class Iniciativa(models.Model):
         return self.iniciativa
 
 class Monitoramento(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
-    #eixo = models.ForeignKey(Eixo, on_delete=models.CASCADE)
-    #programa = models.ForeignKey(Programa, on_delete=models.CASCADE)
-    #acao = models.ForeignKey(Acao, on_delete=models.CASCADE)
-    #secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE)
     iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE, verbose_name = _("Nome da Iniciativa"))
     status = models.CharField(max_length=255, choices=status_lista, verbose_name = _("Status"))
     data_inicio_planejado = models.DateTimeField(default=timezone.now, verbose_name = _("Data Planejada - Início"))
@@ -211,8 +203,6 @@ class Monitoramento(models.Model):
         return self.status
     
 class Etapa(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
     iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE, verbose_name = _("Nome da Iniciativa"))
     responsavel = models.ForeignKey(Responsavel, on_delete=models.CASCADE, verbose_name = _("Nome do(a) Responsável"))
     etapa = models.TextField(default='teste', verbose_name = _("Nome da Etapa"))
@@ -232,12 +222,6 @@ class Etapa(models.Model):
         return self.etapa
 
 class MonitoramentoEtapa(models.Model):
-    data_criacao = models.DateTimeField(auto_now_add=True)
-    data_atualizacao = models.DateTimeField(auto_now=True)
-    #eixo = models.ForeignKey(Eixo, on_delete=models.CASCADE)
-    #programa = models.ForeignKey(Programa, on_delete=models.CASCADE)
-    #acao = models.ForeignKey(Acao, on_delete=models.CASCADE)
-    #secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE)
     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE, verbose_name = _("Nome da Etapa"))
     status = models.CharField(max_length=255, choices=status_lista, verbose_name = _("Status"))
     data_inicio_planejado = models.DateTimeField(default=timezone.now, verbose_name = _("Data Planejada - Início"))
