@@ -25,9 +25,9 @@ SECRET_KEY = 'django-insecure-9x345=z3oc^z_bxx0&@fp#9%-vj+im-$7kt@@ssdb2sxumeyb#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+CSRF_TRUSTED_ORIGINS = ['https://*.seplag.pe.gov.br', 'https://*.127.0.0.1']
 ALLOWED_HOSTS = ["*"]
-
+CSRF_COOKIE_SECURE = False
 
 # Application definition
 
