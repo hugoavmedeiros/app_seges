@@ -10,16 +10,21 @@ from .models import Iniciativa
 from .models import Monitoramento
 from .models import Etapa
 from .models import MonitoramentoEtapa
+from .models import Fonte
 import csv
 from django.http import HttpResponse
+
+admin.site.site_header = 'Painel de Controle' # Muda do site Admin
 
 @admin.register(Eixo) # chama diretamente
 class EixoAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("eixo_estrategico_cd", "eixo_estrategico",)
 
-admin.site.register(Programa)
+@admin.register(Fonte) # chama diretamente
+class FonteAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("fonte_cd", "fonte_nm",)
 
-admin.site.site_header = 'Painel de Controle' # Muda do site Admin
+admin.site.register(Programa)
 
 # Ação #
 

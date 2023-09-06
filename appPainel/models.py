@@ -59,6 +59,18 @@ class Eixo(models.Model):
     def __str__(self):
         return self.eixo_estrategico + " " + self.eixo_estrategico_cd
 
+class Fonte(models.Model):
+    fonte_nm = models.CharField(_("Nome da Fonte"), max_length=255)
+    fonte_cd = models.CharField(_("Código da Fonte"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
+    history = HistoricalRecords()
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.fonte_nm + " " + self.fonte_cd
+
 class Programa(models.Model):
     eixo_estrategico = models.ForeignKey(Eixo, on_delete=models.CASCADE, verbose_name = _("Nome do Eixo"))
     programa = models.CharField(verbose_name=_("Nome do Programa"), max_length=255)
