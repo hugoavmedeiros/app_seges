@@ -1,4 +1,6 @@
 from django.db import models
+from django.forms import ValidationError
+from djmoney.models.fields import MoneyField
 
 # Create your models here.
 from pickle import OBJ
@@ -46,6 +48,32 @@ tipo_acao_lista = (
     ('Projeto','Projeto'),
 )
 
+ano_lista = (
+    ('2023','2023'),
+    ('2024','2024'),
+    ('2025','2025'),
+    ('2026','2026'),
+)
+
+mes_lista = (
+    ('1','Jan'),
+    ('2','Fev'),
+    ('3','Mar'),
+    ('4','Abr'),
+    ('5','Mai'),
+    ('6','Jun'),
+    ('7','Jul'),
+    ('8','Ago'),
+    ('9','Set'),
+    ('10','Out'),
+    ('11','Nov'),
+    ('12','Dez'),
+)
+
+def validar_moeda(value):
+    if value.amount <= 0:
+        raise ValidationError(_("O valor deve ser maior que zero."))
+
 class Eixo(models.Model):
     eixo_estrategico = models.CharField(_("Nome do Eixo"), max_length=255)
     eixo_estrategico_cd = models.CharField(_("Código do Eixo"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
@@ -70,6 +98,18 @@ class Fonte(models.Model):
 
     def __str__(self):
         return self.fonte_nm + " " + self.fonte_cd
+
+class Produto(models.Model):
+    produto_nm = models.CharField(_("Nome do Produto"), max_length=255)
+    produto_cd = models.CharField(_("Código do Produto"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
+    history = HistoricalRecords()
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.produto_nm + " " + self.produto_cd
 
 class Programa(models.Model):
     eixo_estrategico = models.ForeignKey(Eixo, on_delete=models.CASCADE, verbose_name = _("Nome do Eixo"))
@@ -187,6 +227,9 @@ class Iniciativa(models.Model):
 
     def __str__(self):
         return self.iniciativa
+    
+    class Meta:
+        verbose_name_plural = "Iniciativas"
 
 class Monitoramento(models.Model):
     iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE, verbose_name = _("Nome da Iniciativa"))
@@ -258,3 +301,48 @@ class MonitoramentoEtapa(models.Model):
 
     def __str__(self):
         return self.status
+
+### FONTES INICIATIVA ###
+class FontesIniciativa(models.Model):
+    iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE, verbose_name = _("Nome da Iniciativa"))
+    fonte = models.ForeignKey(Fonte, on_delete=models.CASCADE, verbose_name = _("Nome da Fonte"))
+    ano = models.CharField(max_length=255, choices=ano_lista, verbose_name = _("Ano"))
+    valor = MoneyField(
+        max_digits=10, decimal_places=2,
+        validators=[validar_moeda],
+        default_currency='BRL',
+        verbose_name = _("Valor")
+    )
+    history = HistoricalRecords()
+
+    class Meta:
+        verbose_name_plural = "Fontes"
+        ordering = ("iniciativa",) # ordena pelo nome da iniciativa
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.iniciativa
+    
+### PRODUTOS INICIATIVA ###
+class ProdutosIniciativa(models.Model):
+    iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE, verbose_name = _("Nome da Iniciativa"))
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE, verbose_name = _("Nome do Produto"))
+    ano = models.CharField(max_length=255, choices=ano_lista, verbose_name = _("Ano"))
+    mes = models.CharField(max_length=255, choices=mes_lista, verbose_name = _("Mês"))
+    previsto = models.CharField(_("Previsto"), max_length=6, validators=[RegexValidator(r'^\d{1,10}$')])
+    realizado = models.CharField(_("Realizado"), max_length=6, validators=[RegexValidator(r'^\d{1,10}$')])
+    history = HistoricalRecords()
+
+    class Meta:
+        verbose_name_plural = "Produtos"
+        ordering = ("iniciativa",) # ordena pelo nome da iniciativa
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.iniciativa
