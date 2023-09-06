@@ -150,3 +150,68 @@ STATIC_ROOT = BASE_DIR / 'static'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "SEGES",
+    "site_header": "SEGES", 
+    "site_brand": "SEGES",
+    "site_logo": "vendor/adminlte/img/seplagtransparente.png",
+    "login_logo": "vendor/adminlte/img/seplagtransparente_login.png",
+    "site_logo_classes": None,
+    "site_icon": "vendor/adminlte/img/seplagtransparente.png",
+    "welcome_sign": "Bem-vindo(a)",
+    "copyright": "Instituto de Gestão Pública de Pernambuco",
+    "order_with_respect_to": [
+        "auth", 
+        "appPainel",
+        "appPainel.Eixo",
+        "appPainel.Programa",
+        "appPainel.Acao",
+        "appPainel.Iniciativa",
+        "appPainel.Etapa",
+        "appPainel.Monitoramento",
+        "appPainel.MonitoramentoEtapa",
+        "appPainel.Secretaria",
+        "appPainel.Orgao",
+        "appPainel.Responsavel",
+        ],
+    "show_ui_builder": False,
+    "changeform_format": "vertical_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "collapsible",
+    },
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-navy",
+    "navbar": "navbar-white navbar-light",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-light-navy",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": True,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": True,
+    "theme": "sandstone",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    },
+    "actions_sticky_top": False
+}
