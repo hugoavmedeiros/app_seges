@@ -1,25 +1,20 @@
+# bibliotecas
 from django.contrib import admin
-from .models import Eixo
-from .models import Programa
-from .models import Acao
-from .models import Secretaria
-from .models import Orgao
-from .models import Responsavel
-from .models import Municipio
-from .models import Iniciativa
-from .models import Monitoramento
-from .models import Etapa
-from .models import MonitoramentoEtapa
-import csv
+from django.forms import inlineformset_factory
 from django.http import HttpResponse
+# import csv
+# Modelos
+from .models import Eixo, Programa, Acao, Secretaria, Orgao, Responsavel, Municipio, Iniciativa, Monitoramento, Etapa, MonitoramentoEtapa, Fonte, FontesIniciativa, ProdutosIniciativa
 
+admin.site.site_header = 'Painel de Controle' # Muda do site Admin
+
+# Eixos - Formulário #
 @admin.register(Eixo) # chama diretamente
 class EixoAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("eixo_estrategico_cd", "eixo_estrategico",)
 
+# Programa - Formulário #
 admin.site.register(Programa)
-
-admin.site.site_header = 'Painel de Controle' # Muda do site Admin
 
 # Ação #
 
@@ -47,7 +42,23 @@ class MunicipioAdmin(admin.ModelAdmin): # lista_display permite mostrar campos c
     # search_fields = ("iniciativa", "status",)
 
 # Iniciativa #
-admin.site.register(Iniciativa)
+class FonteIniciativaInline(admin.StackedInline):  # ou admin.StackedInline
+    model = FontesIniciativa
+
+class ProdutoIniciativaInline(admin.StackedInline):  # ou admin.StackedInline
+    model = ProdutosIniciativa
+
+@admin.register(Iniciativa)
+class IniciativaAdmin(admin.ModelAdmin):
+    inlines = [FonteIniciativaInline, ProdutoIniciativaInline]
+
+@admin.register(FontesIniciativa)
+class FontesIniciativaAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(ProdutosIniciativa)
+class ProdutosIniciativaAdmin(admin.ModelAdmin):
+    pass
 
 # Monitoramento #
 @admin.register(Monitoramento) # chama diretamente
