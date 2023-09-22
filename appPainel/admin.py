@@ -4,7 +4,7 @@ from django.forms import inlineformset_factory
 from django.http import HttpResponse
 # import csv
 # Modelos
-from .models import Eixo, Programa, Acao, Secretaria, Orgao, Responsavel, Municipio, Iniciativa, Monitoramento, Etapa, MonitoramentoEtapa, Fonte, FontesIniciativa, ProdutosIniciativa
+from .models import Eixo, Programa, Acao, Secretaria, Orgao, Responsavel, Municipio, Iniciativa, Monitoramento, Etapa, MonitoramentoEtapa, Fontes, FontesIniciativa, ProdutosIniciativa
 
 admin.site.site_header = 'Painel de Controle' # Muda do site Admin
 
@@ -52,13 +52,13 @@ class ProdutoIniciativaInline(admin.StackedInline):  # ou admin.StackedInline
 class IniciativaAdmin(admin.ModelAdmin):
     inlines = [FonteIniciativaInline, ProdutoIniciativaInline]
 
-@admin.register(FontesIniciativa)
+@admin.register(Fontes)
 class FontesIniciativaAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('fonte_cd',)
 
-@admin.register(ProdutosIniciativa)
-class ProdutosIniciativaAdmin(admin.ModelAdmin):
-    pass
+#@admin.register(ProdutosIniciativa)
+#class ProdutosIniciativaAdmin(admin.ModelAdmin):
+#    pass
 
 # Monitoramento #
 @admin.register(Monitoramento) # chama diretamente

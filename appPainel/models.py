@@ -4,6 +4,7 @@ from djmoney.models.fields import MoneyField
 
 # Create your models here.
 from pickle import OBJ
+from datetime import date
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
@@ -76,36 +77,39 @@ def validar_moeda(value):
 
 class Eixo(models.Model):
     eixo_estrategico = models.CharField(_("Nome do Eixo"), max_length=255)
-    eixo_estrategico_cd = models.CharField(_("Código do Eixo"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
+    eixo_estrategico_cd = models.CharField(_("Código do Eixo"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], unique=True)
     descricao = models.TextField(verbose_name = _("Descrição"))
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
         return self.eixo_estrategico + " " + self.eixo_estrategico_cd
 
-class Fonte(models.Model):
+class Fontes(models.Model):
+    fonte_cd = models.CharField(_("Código da Fonte"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], unique=True)
     fonte_nm = models.CharField(_("Nome da Fonte"), max_length=255)
-    fonte_cd = models.CharField(_("Código da Fonte"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
-        return self.fonte_nm + " " + self.fonte_cd
+        return self.fonte_cd
+    
+    class Meta:
+        verbose_name_plural = "Fontes"
 
 class Produto(models.Model):
     produto_nm = models.CharField(_("Nome do Produto"), max_length=255)
-    produto_cd = models.CharField(_("Código do Produto"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
+    produto_cd = models.CharField(_("Código do Produto"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], unique=True)
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -114,13 +118,13 @@ class Produto(models.Model):
 class Programa(models.Model):
     eixo_estrategico = models.ForeignKey(Eixo, on_delete=models.CASCADE, verbose_name = _("Nome do Eixo"))
     programa = models.CharField(verbose_name=_("Nome do Programa"), max_length=255)
-    programa_cd = models.CharField(_("Código do Programa"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
+    programa_cd = models.CharField(_("Código do Programa"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], unique=True)
     tipo = models.CharField(max_length=255, choices=tipo_programa_lista, verbose_name = _("Tipo"))
     descricao = models.TextField(verbose_name = _("Descrição"))
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -129,13 +133,13 @@ class Programa(models.Model):
 class Acao(models.Model):
     programa = models.ForeignKey(Programa, on_delete=models.CASCADE, verbose_name = _("Nome do Programa"))
     acao = models.CharField(max_length=255, verbose_name = _("Nome da Ação"))
-    acao_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código da Ação"))
+    acao_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código da Ação"), unique=True)
     tipo = models.CharField(max_length=255, choices=tipo_acao_lista, verbose_name = _("Tipo"))
     descricao = models.TextField(verbose_name = _("Descrição"))
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -146,11 +150,11 @@ class Acao(models.Model):
 
 class Secretaria(models.Model):
     secretaria = models.CharField(max_length=255, verbose_name = _("Nome da Secretaria"))
-    secretaria_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código da Secretaria"))
+    secretaria_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código da Secretaria"), unique=True)
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -162,11 +166,11 @@ class Secretaria(models.Model):
 class Orgao(models.Model):
     secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE, verbose_name = _("Nome da Secretaria"))
     orgao = models.CharField(max_length=255, verbose_name = _("Nome do Órgão"))
-    orgao_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código do Órgão"))
+    orgao_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código do Órgão"), unique=True)
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -181,7 +185,7 @@ class Municipio(models.Model):
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -197,7 +201,7 @@ class Responsavel(models.Model):
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -213,7 +217,7 @@ class Iniciativa(models.Model):
     responsavel = models.ForeignKey(Responsavel, on_delete=models.CASCADE, verbose_name = _("Nome do(a) Responsável"))
     gestor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name = _("Nome do(a) Gestor(a)"))
     iniciativa = models.TextField(default='teste', verbose_name = _("Nome da Iniciativa"))
-    iniciativa_cd = models.CharField(max_length=4, verbose_name = _("Código da Iniciativa"))
+    iniciativa_cd = models.CharField(max_length=4, verbose_name = _("Código da Iniciativa"), unique=True)
     tipo = models.CharField(max_length=255, choices=tipo_lista, verbose_name = _("Tipo"))    
     tema = models.TextField(verbose_name = _("Tema"))
     descricao = models.TextField(verbose_name = _("Descrição"))
@@ -222,7 +226,7 @@ class Iniciativa(models.Model):
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -234,10 +238,10 @@ class Iniciativa(models.Model):
 class Monitoramento(models.Model):
     iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE, verbose_name = _("Nome da Iniciativa"))
     status = models.CharField(max_length=255, choices=status_lista, verbose_name = _("Status"))
-    data_inicio_planejado = models.DateTimeField(default=timezone.now, verbose_name = _("Data Planejada - Início"))
-    data_inicio_atualizado = models.DateTimeField(blank=True, null=True, verbose_name = _("Data Atualizada - Início"))
-    data_termino_planejado = models.DateTimeField(default=timezone.now, verbose_name = _("Data Planejada - Término"))
-    data_termino_atualizado = models.DateTimeField(blank=True, null=True, verbose_name = _("Data Atualizada - Término"))
+    data_inicio_planejado = models.DateField(default=date.today, verbose_name = _("Data Planejada - Início"))
+    data_inicio_atualizado = models.DateField(blank=True, null=True, verbose_name = _("Data Atualizada - Início"))
+    data_termino_planejado = models.DateField(default=date.today, verbose_name = _("Data Planejada - Término"))
+    data_termino_atualizado = models.DateField(blank=True, null=True, verbose_name = _("Data Atualizada - Término"))
     execucao_fisica = models.DecimalField(
         max_digits=3, decimal_places=1, default=Decimal(0), validators=PERCENTAGE_VALIDATOR, verbose_name = _("Execução Física")
         )
@@ -251,7 +255,7 @@ class Monitoramento(models.Model):
         ordering = ("iniciativa",) # ordena pelo nome da iniciativa
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -261,7 +265,7 @@ class Etapa(models.Model):
     iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE, verbose_name = _("Nome da Iniciativa"))
     responsavel = models.ForeignKey(Responsavel, on_delete=models.CASCADE, verbose_name = _("Nome do(a) Responsável"))
     etapa = models.TextField(default='teste', verbose_name = _("Nome da Etapa"))
-    etapa_cd = models.CharField(max_length=4, verbose_name = _("Código da Etapa"))
+    etapa_cd = models.CharField(max_length=4, verbose_name = _("Código da Etapa"), unique=True)
     tipo = models.CharField(max_length=255, choices=tipo_lista,verbose_name = _("Tipo"))    
     tema = models.TextField(verbose_name = _("Tema"))
     descricao = models.TextField(verbose_name = _("Descrição"))
@@ -270,7 +274,7 @@ class Etapa(models.Model):
     history = HistoricalRecords()
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -279,10 +283,10 @@ class Etapa(models.Model):
 class MonitoramentoEtapa(models.Model):
     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE, verbose_name = _("Nome da Etapa"))
     status = models.CharField(max_length=255, choices=status_lista, verbose_name = _("Status"))
-    data_inicio_planejado = models.DateTimeField(default=timezone.now, verbose_name = _("Data Planejada - Início"))
-    data_inicio_atualizado = models.DateTimeField(blank=True, null=True, verbose_name = _("Data Atualizada - Início"))
-    data_termino_planejado = models.DateTimeField(default=timezone.now, verbose_name = _("Data Planejada - Término"))
-    data_termino_atualizado = models.DateTimeField(blank=True, null=True, verbose_name = _("Data Atualizada - Término"))
+    data_inicio_planejado = models.DateField(default=date.today, verbose_name = _("Data Planejada - Início"))
+    data_inicio_atualizado = models.DateField(blank=True, null=True, verbose_name = _("Data Atualizada - Início"))
+    data_termino_planejado = models.DateField(default=date.today, verbose_name = _("Data Planejada - Término"))
+    data_termino_atualizado = models.DateField(blank=True, null=True, verbose_name = _("Data Atualizada - Término"))
     execucao_fisica = models.DecimalField(
         max_digits=3, decimal_places=1, default=Decimal(0), validators=PERCENTAGE_VALIDATOR, verbose_name = _("Execução Física")
         )
@@ -296,16 +300,17 @@ class MonitoramentoEtapa(models.Model):
         ordering = ("etapa",) # ordena pelo nome da iniciativa
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
         return self.status
 
+
 ### FONTES INICIATIVA ###
 class FontesIniciativa(models.Model):
     iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE, verbose_name = _("Nome da Iniciativa"))
-    fonte = models.ForeignKey(Fonte, on_delete=models.CASCADE, verbose_name = _("Nome da Fonte"))
+    fonte = models.ForeignKey(Fontes, on_delete=models.CASCADE, verbose_name = _("Código da Fonte"), to_field='fonte_cd')
     ano = models.CharField(max_length=255, choices=ano_lista, verbose_name = _("Ano"))
     valor = MoneyField(
         max_digits=10, decimal_places=2,
@@ -320,7 +325,7 @@ class FontesIniciativa(models.Model):
         ordering = ("iniciativa",) # ordena pelo nome da iniciativa
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
@@ -341,7 +346,7 @@ class ProdutosIniciativa(models.Model):
         ordering = ("iniciativa",) # ordena pelo nome da iniciativa
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.published_date = date.today()
         self.save()
 
     def __str__(self):
