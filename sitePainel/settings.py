@@ -161,7 +161,7 @@ JAZZMIN_SETTINGS = {
     "site_brand": "SEGES",
     "site_logo": "vendor/adminlte/img/seplagtransparente.png",
     "login_logo": "vendor/adminlte/img/seplagtransparente_login.png",
-    "site_logo_classes": "rounded",
+    "site_logo_classes": "squared",
     "site_icon": "vendor/adminlte/img/favicon.png",
     "welcome_sign": "Bem-vindo(a)",
     "copyright": "Instituto de Gestão Pública de Pernambuco",
