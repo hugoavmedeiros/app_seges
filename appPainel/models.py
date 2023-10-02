@@ -132,7 +132,7 @@ class Programa(models.Model):
 
 class Acao(models.Model):
     programa = models.ForeignKey(Programa, on_delete=models.CASCADE, verbose_name = _("Nome do Programa"))
-    acao = models.CharField(max_length=255, verbose_name = _("Nome da Ação"))
+    acao = models.CharField(max_length=255, verbose_name = _("Nome da Ação"), unique=True)
     acao_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código da Ação"), unique=True)
     tipo = models.CharField(max_length=255, choices=tipo_acao_lista, verbose_name = _("Tipo"))
     descricao = models.TextField(verbose_name = _("Descrição"))

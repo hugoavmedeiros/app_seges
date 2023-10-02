@@ -4,6 +4,8 @@
 {% get_jazzmin_settings request as jazzmin_settings %}
 {% get_jazzmin_ui_tweaks as jazzmin_ui %}
 
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
@@ -48,7 +50,7 @@
     {% endif %}
 
     {% block extrastyle %} {% endblock %}
-    {% block extrahead %} {% endblock %}
+    {% block extrahead %}  <link rel="stylesheet" type="text/css" href="{% static 'admin_custom.css' %}"> {% endblock %}
 </head>
 <body class="hold-transition{% if not jazzmin_settings.show_sidebar %} no-sidebar{% else %} sidebar-mini{% endif %} {% sidebar_status request %} {% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %} {{ jazzmin_ui.body_classes }} {% if jazzmin_ui.dark_mode_theme %}theme-dark{% endif %}" data-admin-utc-offset="{% now "Z" %}">
 
@@ -327,7 +329,7 @@
                 <b>{% trans 'Jazzmin version' %}</b> {% get_jazzmin_version %}
             </div>
             {% autoescape off %}
-                <strong>{% trans 'Copyright' %} &copy; {% now 'Y' %} {{ jazzmin_settings.copyright }}.</strong> {% trans 'Todos os direitos reservados.' %}
+                <strong>{% trans 'Desenvolvido por' %} &copy; {% now 'Y' %} {{ jazzmin_settings.copyright }}.</strong> {% trans 'Todos os direitos reservados.' %}
             {% endautoescape %}
         </footer>
         {% if jazzmin_settings.show_ui_builder %}

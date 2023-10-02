@@ -2,6 +2,7 @@
 from django.contrib import admin
 from django.forms import inlineformset_factory
 from django.http import HttpResponse
+from import_export.admin import ImportExportActionModelAdmin
 # import csv
 # Modelos
 from .models import Eixo, Programa, Acao, Secretaria, Orgao, Responsavel, Municipio, Iniciativa, Monitoramento, Etapa, MonitoramentoEtapa, Fontes, FontesIniciativa, ProdutosIniciativa
@@ -10,7 +11,7 @@ admin.site.site_header = 'Painel de Controle' # Muda do site Admin
 
 # Eixos - Formulário #
 @admin.register(Eixo) # chama diretamente
-class EixoAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+class EixoAdmin(ImportExportActionModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("eixo_estrategico_cd", "eixo_estrategico",)
 
 # Programa - Formulário #
@@ -19,7 +20,7 @@ admin.site.register(Programa)
 # Ação #
 
 @admin.register(Acao) # chama diretamente
-class AcaoAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+class AcaoAdmin(ImportExportActionModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("programa", "acao",)
     list_filter = ("programa",) # cria filtros
     # search_fields = ("iniciativa", "status",)
@@ -35,7 +36,7 @@ class ResponsavelAdmin(admin.ModelAdmin): # lista_display permite mostrar campos
 admin.site.register(Responsavel, ResponsavelAdmin)
 
 @admin.register(Municipio) # chama diretamente
-class MunicipioAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+class MunicipioAdmin(ImportExportActionModelAdmin): # lista_display permite mostrar campos customizados
     ordering = ('nome',)
     list_display = ("codigo", "nome",)
     list_filter = ("nome",) # cria filtros
@@ -44,13 +45,14 @@ class MunicipioAdmin(admin.ModelAdmin): # lista_display permite mostrar campos c
 # Iniciativa #
 class FonteIniciativaInline(admin.StackedInline):  # ou admin.StackedInline
     model = FontesIniciativa
-
+    
 class ProdutoIniciativaInline(admin.StackedInline):  # ou admin.StackedInline
     model = ProdutosIniciativa
 
 @admin.register(Iniciativa)
-class IniciativaAdmin(admin.ModelAdmin):
+class IniciativaAdmin(ImportExportActionModelAdmin):
     inlines = [FonteIniciativaInline, ProdutoIniciativaInline]
+    list_display = ['acao', 'iniciativa']
 
 @admin.register(Fontes)
 class FontesIniciativaAdmin(admin.ModelAdmin):
