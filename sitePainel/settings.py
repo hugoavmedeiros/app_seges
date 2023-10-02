@@ -57,7 +57,7 @@ ROOT_URLCONF = 'sitePainel.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-BR'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -145,11 +145,15 @@ USE_TZ = True
 
 #STATIC_URL = 'static/'
 #STATIC_ROOT = BASE_DIR / 'static'
-STATIC_ROOT = ''
+#STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = ('static',)
+#STATICFILES_DIRS = ('static',)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'jazzmin/templates/admin'),  # Include shared static files
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
