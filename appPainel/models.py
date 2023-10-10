@@ -77,8 +77,8 @@ def validar_moeda(value):
 
 class Eixo(models.Model): # objetivos estratégicos do governo
     eixo_estrategico = models.CharField(_("Nome do Eixo"), max_length=255)
-    eixo_estrategico_cd = models.CharField(_("Código do Eixo"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], unique=True)
-    descricao = models.TextField(blank=True, verbose_name = _("Descrição"))
+    eixo_estrategico_cd = models.CharField(_("Código do Eixo"), max_length=10, unique=True)
+    descricao = models.TextField(blank=True, null=True, verbose_name = _("Descrição"))
     history = HistoricalRecords()
 
     def publish(self):
@@ -197,7 +197,9 @@ class Municipio(models.Model):
         return self.nome
 
     class Meta:
-        verbose_name_plural = "Municípios"  
+        verbose_name_plural = "Municípios"
+        permissions = [("can_export_data", "Can Export Data")]
+  
 
 class Responsavel(models.Model):
     secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE, verbose_name = _("Nome da Secretaria"))
@@ -227,7 +229,7 @@ class Iniciativa(models.Model):
     tipo = models.CharField(max_length=255, choices=tipo_lista, verbose_name = _("Tipo"))    
     tema = models.TextField(verbose_name = _("Tema"))
     descricao = models.TextField(verbose_name = _("Descrição"))
-    populacao = models.IntegerField(blank=True, verbose_name = _("População"))
+    populacao = models.IntegerField(blank=True, null=True, verbose_name = _("População"))
     municipio = models.ManyToManyField(Municipio, default='Recife', verbose_name = _("Nome do Município"))
     history = HistoricalRecords()
 
@@ -275,7 +277,7 @@ class Etapa(models.Model):
      tipo = models.CharField(max_length=255, blank=True, choices=tipo_lista,verbose_name = _("Tipo"))    
      tema = models.TextField(blank=True, verbose_name = _("Tema"))
      descricao = models.TextField(verbose_name = _("Descrição"))
-     populacao = models.IntegerField(verbose_name = _("População"))
+     populacao = models.IntegerField(blank=True, null=True, verbose_name = _("População"))
      municipio = models.ManyToManyField(Municipio, default='Recife', verbose_name = _("Nome do Município"))
      history = HistoricalRecords()
 

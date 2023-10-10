@@ -134,14 +134,15 @@ USE_TZ = True
 
 #STATIC_URL = 'static/'
 #STATIC_ROOT = BASE_DIR / 'static'
-#STATIC_ROOT = ''
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = ''
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'
 
 #STATICFILES_DIRS = ('static',)
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'templates/admin'),  # Include shared static files
+    os.path.join(BASE_DIR, 'templates/admin'),
+      'static',  # Include shared static files
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -158,6 +159,12 @@ JAZZMIN_SETTINGS = {
     "site_icon": "vendor/adminlte/img/favicon.png",
     "welcome_sign": "Bem-vindo(a)",
     "copyright": "Instituto de Gestão Pública de Pernambuco",
+    "topmenu_links": [
+        {"name": "Início",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Suporte", "url": "https://www.seplag.pe.gov.br/contato", "new_window": True},
+        {"model": "auth.User"},
+        {"app": "appPainel"},
+    ],
     "order_with_respect_to": [
         "auth", 
         "appPainel",
@@ -174,11 +181,14 @@ JAZZMIN_SETTINGS = {
         "appPainel.Responsavel",
         ],
     "show_ui_builder": False,
-    "changeform_format": "vertical_tabs",
+    "changeform_format": "horizontal_tabs",
     "changeform_format_overrides": {
         "auth.user": "collapsible",
         "auth.group": "collapsible",
     },
+    #### BARRA LATERAL ####
+    "show_sidebar": True,
+    "navigation_expanded": True,
 }
 
 JAZZMIN_UI_TWEAKS = {

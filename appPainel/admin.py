@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.forms import inlineformset_factory
 from django.http import HttpResponse
-from import_export.admin import ImportExportActionModelAdmin
+from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin
 # import csv
 # Modelos
 from .models import Eixo, Programa, Acao, Secretaria, Orgao, Responsavel, Municipio, Iniciativa, Monitoramento, Etapa, MonitoramentoEtapa, Fontes, FontesIniciativa, Produto, ProdutosIniciativa
@@ -11,16 +11,18 @@ admin.site.site_header = 'Painel de Controle' # Muda do site Admin
 
 # Eixos - Formulário #
 @admin.register(Eixo) # chama diretamente
-class EixoAdmin(ImportExportActionModelAdmin): # lista_display permite mostrar campos customizados
+class EixoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("eixo_estrategico_cd", "eixo_estrategico",)
 
 # Programas - Formulário #
-admin.site.register(Programa)
+@admin.register(Programa) # chama diretamente
+class EixoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("programa", "programa_cd",)
 
 # Ações - Formulário #
 
 @admin.register(Acao) # chama diretamente
-class AcaoAdmin(ImportExportActionModelAdmin): # lista_display permite mostrar campos customizados
+class AcaoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("programa", "acao",)
     list_filter = ("programa",) # cria filtros
     # search_fields = ("iniciativa", "status",)
@@ -38,11 +40,12 @@ admin.site.register(Responsavel, ResponsavelAdmin)
 # Município
 
 @admin.register(Municipio) # chama diretamente
-class MunicipioAdmin(ImportExportActionModelAdmin): # lista_display permite mostrar campos customizados
+class MunicipioAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     ordering = ('nome',)
     list_display = ("codigo", "nome",)
+    list_display_links = None
     list_filter = ("nome",) # cria filtros
-    # search_fields = ("iniciativa", "status",)
+    search_fields = ("codigo", "nome",)
 
 # Iniciativa #
 class FonteIniciativaInline(admin.StackedInline):  # ou admin.StackedInline
@@ -55,7 +58,7 @@ class EtapaInline(admin.StackedInline):  # ou admin.StackedInline
     model = Etapa
 
 #@admin.register(Iniciativa)
-class IniciativaAdmin(ImportExportActionModelAdmin):
+class IniciativaAdmin(ImportExportModelAdmin):
     model = Iniciativa
     inlines = [FonteIniciativaInline, ProdutoIniciativaInline, EtapaInline]
     list_display = ['acao', 'iniciativa']

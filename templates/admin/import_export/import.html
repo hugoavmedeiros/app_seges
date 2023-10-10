@@ -27,11 +27,10 @@
       {% csrf_token %}
       {{ confirm_form.as_p }}
       <p>
-        {% trans "A tabela abaixo apresenta uma prévia dos dados a serem importados. Se você estiver de acordo, clique em 'Confirmar Importação'" %}
+        {% trans "Below is a preview of data to be imported. If you are satisfied with the results, click 'Confirm import'" %}
       </p>
-      <br>
       <div class="submit-row">
-        <input type="submit" class="default" name="confirm" value="{% trans "Confirmar Importação" %}">
+        <input type="submit" class="default" name="confirm" value="{% trans "Confirm import" %}">
       </div>
     </form>
     {% endblock %}
@@ -167,8 +166,8 @@
     {% else %}
 
       {% block preview %}
-      <br>
-      
+      <h2>{% trans "Preview" %}</h2>
+
       <table class="import-preview">
         <thead>
           <tr>
