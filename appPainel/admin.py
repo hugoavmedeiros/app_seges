@@ -57,12 +57,15 @@ class MunicipioAdmin(ImportExportModelAdmin): # lista_display permite mostrar ca
 # Iniciativa #
 class FonteIniciativaInline(admin.StackedInline):  # ou admin.StackedInline
     model = FontesIniciativa
+    extra = 0
     
 class ProdutoIniciativaInline(admin.StackedInline):  # ou admin.StackedInline
     model = ProdutosIniciativa
+    extra = 0
 
 class EtapaInline(admin.StackedInline):  # ou admin.StackedInline
     model = Etapa
+    extra = 0
 
 #@admin.register(Iniciativa)
 class IniciativaAdmin(ImportExportModelAdmin):
