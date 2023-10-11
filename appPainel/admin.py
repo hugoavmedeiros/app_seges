@@ -28,11 +28,18 @@ class AcaoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos 
     # search_fields = ("iniciativa", "status",)
 
 # Secretaria - Formulário #
-admin.site.register(Secretaria)
-admin.site.register(Orgao)
+class SecretariaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("secretaria",)
+
+admin.site.register(Secretaria, SecretariaAdmin)
+
+# Órgão - Formulário #
+class OrgaoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("secretaria",)
+admin.site.register(Orgao, OrgaoAdmin)
 
 # Reponsável - Formulário #
-class ResponsavelAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+class ResponsavelAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("nome", "secretaria",)
 
 admin.site.register(Responsavel, ResponsavelAdmin)
@@ -66,7 +73,7 @@ class IniciativaAdmin(ImportExportModelAdmin):
 admin.site.register(Iniciativa, IniciativaAdmin)
 
 @admin.register(Fontes)
-class FontesAdmin(admin.ModelAdmin):
+class FontesAdmin(ImportExportModelAdmin):
     list_display = ('fonte_cd',)
 
 #@admin.register(ProdutosIniciativa)
@@ -74,12 +81,12 @@ class FontesAdmin(admin.ModelAdmin):
 #    pass
 
 @admin.register(Produto)
-class ProdutoAdmin(admin.ModelAdmin):
+class ProdutoAdmin(ImportExportModelAdmin):
     list_display = ('produto_nm',)
 
 # Monitoramento #
 @admin.register(Monitoramento) # chama diretamente
-class MonitoramentoAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+class MonitoramentoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("iniciativa",)
     #list_editable = ("status", "execucao_fisica",) # permite editar do preview
     #list_filter = ("status",) # cria filtros
@@ -90,7 +97,7 @@ class MonitoramentoAdmin(admin.ModelAdmin): # lista_display permite mostrar camp
 
 # Monitoramento Etapa#
 @admin.register(MonitoramentoEtapa) # chama diretamente
-class MonitoramentoEtapaAdmin(admin.ModelAdmin): # lista_display permite mostrar campos customizados
+class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("etapa", "status", "execucao_fisica",)
     list_editable = ("status", "execucao_fisica",) # permite editar do preview
     list_filter = ("status",) # cria filtros

@@ -259,7 +259,7 @@ class Monitoramento(models.Model):
     history = HistoricalRecords()
 
     class Meta:
-        verbose_name_plural = "Mon. de Iniciativas"
+        verbose_name_plural = "Mon. de Metas"
         ordering = ("iniciativa",) # ordena pelo nome da iniciativa
 
     def publish(self):
