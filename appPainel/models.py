@@ -108,7 +108,7 @@ class Fontes(models.Model): # fontes das iniciativas
 
 class Produto(models.Model): # produtos gerados pelas iniciativas
     produto_nm = models.CharField(_("Nome do Produto"), max_length=255)
-    produto_cd = models.CharField(_("Código do Produto"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], unique=True)
+    produto_unidade = models.CharField(_("Unidade do Produto"), max_length=255)
     history = HistoricalRecords()
 
     def publish(self):
@@ -121,7 +121,7 @@ class Produto(models.Model): # produtos gerados pelas iniciativas
 class Programa(models.Model):
     eixo_estrategico = models.ForeignKey(Eixo, on_delete=models.CASCADE, verbose_name = _("Nome do Eixo"))
     programa = models.CharField(verbose_name=_("Nome do Programa"), max_length=255)
-    programa_cd = models.CharField(_("Código do Programa"), max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], unique=True)
+    programa_cd = models.CharField(_("Código do Programa"), max_length=4, validators=[RegexValidator(r'^\d{1,10}$')], unique=True)
     tipo = models.CharField(max_length=255, blank=True, choices=tipo_programa_lista, verbose_name = _("Tipo"))
     descricao = models.TextField(blank=True, verbose_name = _("Descrição"))
     history = HistoricalRecords()
@@ -136,7 +136,7 @@ class Programa(models.Model):
 class Acao(models.Model):
     programa = models.ForeignKey(Programa, on_delete=models.CASCADE, verbose_name = _("Nome do Programa"))
     acao = models.CharField(max_length=255, verbose_name = _("Nome da Ação"), unique=True)
-    acao_cd = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código da Ação"), unique=True)
+    acao_cd = models.CharField(max_length=4, validators=[RegexValidator(r'^\d{1,10}$')], verbose_name = _("Código da Ação"), unique=True)
     tipo = models.CharField(max_length=255, blank=True, choices=tipo_acao_lista, verbose_name = _("Tipo"))
     descricao = models.TextField(blank=True, verbose_name = _("Descrição"))
     history = HistoricalRecords()
@@ -267,7 +267,7 @@ class Monitoramento(models.Model):
         self.save()
 
     def __str__(self):
-        return self.status
+        return self.iniciativa
     
 class Etapa(models.Model):
      iniciativa = models.ForeignKey(Iniciativa, on_delete=models.CASCADE, verbose_name = _("Nome da Iniciativa"))
@@ -321,7 +321,7 @@ class FontesIniciativa(models.Model):
     fonte = models.ForeignKey(Fontes, on_delete=models.CASCADE, verbose_name = _("Código da Fonte"), to_field='fonte_cd')
     ano = models.CharField(max_length=255, choices=ano_lista, verbose_name = _("Ano"))
     valor = MoneyField(
-        max_digits=10, decimal_places=2,
+        max_digits=11, decimal_places=2,
         validators=[validar_moeda],
         default_currency='BRL',
         verbose_name = _("Valor")
