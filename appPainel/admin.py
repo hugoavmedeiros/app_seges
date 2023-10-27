@@ -4,7 +4,7 @@ from django.forms import inlineformset_factory
 from django.http import HttpResponse
 from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin
 # import csv
-# Modelos
+# Modelosl
 from .models import Ano, Tema, Tipo, Status, TipoPrograma, TipoAcao, Eixo, Programa, Acao, Secretaria, Orgao, Responsavel, Municipio, Meta, Monitoramento, Etapa, Subetapa, MonitoramentoEtapa, MonitoramentoSubetapa, Fontes, FontesMeta, Produto, ProdutosMeta, ProdutosEtapa
 
 admin.site.site_header = 'Painel de Controle' # Muda do site Admin
@@ -156,4 +156,4 @@ class ProdutoAdmin(ImportExportModelAdmin):
 ### Fontes ###
 @admin.register(Fontes)
 class FontesAdmin(ImportExportModelAdmin):
-    list_display = ('fonte_cd',)
+    list_display = ('fonte_cd', 'fonte_nm',)

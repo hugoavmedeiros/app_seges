@@ -206,7 +206,11 @@ class Orgao(models.Model):
 class Municipio(models.Model):
     nome = models.CharField(max_length=100, verbose_name = _("Nome do Município"))
     codigo = models.CharField(max_length=7, verbose_name = _("Código do Município"))
-    history = HistoricalRecords()
+    macro = models.CharField(max_length=100, verbose_name = _("Macrorregião"), default="-")
+    macro_num = models.CharField(max_length=10, verbose_name = _("Núm. da Macrorregião"), default="-")
+    rd = models.CharField(max_length=30, verbose_name = _("Região de Desenvolvimento"), default="-")
+    populacao = models.IntegerField(verbose_name = _("População"), default=0)
+    renda_per_capta = models.FloatField(verbose_name = _("Renda per Capta"), default=0)
 
     def publish(self):
         self.published_date = date.today()
