@@ -5,9 +5,43 @@ from django.http import HttpResponse
 from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin
 # import csv
 # Modelos
-from .models import Eixo, Programa, Acao, Secretaria, Orgao, Responsavel, Municipio, Iniciativa, Monitoramento, Etapa, MonitoramentoEtapa, Fontes, FontesIniciativa, Produto, ProdutosIniciativa
+from .models import Ano, Tema, Tipo, Status, TipoPrograma, TipoAcao, Eixo, Programa, Acao, Secretaria, Orgao, Responsavel, Municipio, Meta, Monitoramento, Etapa, Subetapa, MonitoramentoEtapa, MonitoramentoSubetapa, Fontes, FontesMeta, Produto, ProdutosMeta, ProdutosEtapa
 
 admin.site.site_header = 'Painel de Controle' # Muda do site Admin
+
+######### FORMULÁRIOS DE APOIO ##########
+
+# Temas - Formulário #
+@admin.register(Tema) # chama diretamente
+class TemaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("tema_nm",)
+
+# Tipos - Formulário #
+@admin.register(Tipo) # chama diretamente
+class TipoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("tipo_nm",)
+
+# Status - Formulário #
+@admin.register(Status) # chama diretamente
+class StatusAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("status_nm",)
+
+# Ano - Formulário #
+@admin.register(Ano) # chama diretamente
+class AnoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("ano_nr",)
+
+# TipoPrograma - Formulário #
+@admin.register(TipoPrograma) # chama diretamente
+class TipoProgramaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("tipo_programa_nm",)
+
+# TipoAcao - Formulário #
+@admin.register(TipoAcao) # chama diretamente
+class TipoAcaoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("tipo_acao_nm",)
+
+######### FORMULÁRIOS ORÇAMENTÁRIOS ##########
 
 # Eixos - Formulário #
 @admin.register(Eixo) # chama diretamente
@@ -24,8 +58,7 @@ class EixoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos 
 @admin.register(Acao) # chama diretamente
 class AcaoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("programa", "acao",)
-    list_filter = ("programa",) # cria filtros
-    # search_fields = ("iniciativa", "status",)
+    list_filter = ("programa",) # cria filtros    
 
 # Secretaria - Formulário #
 class SecretariaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
@@ -54,55 +87,73 @@ class MunicipioAdmin(ImportExportModelAdmin): # lista_display permite mostrar ca
     list_filter = ("nome",) # cria filtros
     search_fields = ("codigo", "nome",)
 
-# Iniciativa #
-class FonteIniciativaInline(admin.StackedInline):  # ou admin.StackedInline
-    model = FontesIniciativa
+############ FORMULÁRIOS DE METAS ############
+### Metas ###
+class FonteMetaInline(admin.StackedInline):  # ou admin.StackedInline
+    model = FontesMeta
     extra = 0
     
-class ProdutoIniciativaInline(admin.StackedInline):  # ou admin.StackedInline
-    model = ProdutosIniciativa
+class ProdutoMetaInline(admin.StackedInline):  # ou admin.StackedInline
+    model = ProdutosMeta
     extra = 0
 
-class EtapaInline(admin.StackedInline):  # ou admin.StackedInline
+class MetaAdmin(ImportExportModelAdmin):
+    model = Meta
+    inlines = [FonteMetaInline, ProdutoMetaInline]
+    list_display = ['acao', 'meta']
+
+admin.site.register(Meta, MetaAdmin)
+
+### Etapa ###
+class ProdutoEtapaInline(admin.StackedInline):  # ou admin.StackedInline
+    model = ProdutosEtapa
+    extra = 0
+
+class SubetapaInline(admin.StackedInline):  # ou admin.StackedInline
+    model = Subetapa
+    extra = 0
+
+class EtapaAdmin(ImportExportModelAdmin):
     model = Etapa
-    extra = 0
+    inlines = [ProdutoEtapaInline, SubetapaInline]
+    list_display = ['meta', 'etapa']
 
-#@admin.register(Iniciativa)
-class IniciativaAdmin(ImportExportModelAdmin):
-    model = Iniciativa
-    inlines = [FonteIniciativaInline, ProdutoIniciativaInline, EtapaInline]
-    list_display = ['acao', 'iniciativa']
+admin.site.register(Etapa, EtapaAdmin)
 
-admin.site.register(Iniciativa, IniciativaAdmin)
+### Subetapa ###
 
-@admin.register(Fontes)
-class FontesAdmin(ImportExportModelAdmin):
-    list_display = ('fonte_cd',)
-
-#@admin.register(ProdutosIniciativa)
-#class ProdutosIniciativaAdmin(admin.ModelAdmin):
-#    pass
-
-@admin.register(Produto)
-class ProdutoAdmin(ImportExportModelAdmin):
-    list_display = ('produto_nm',)
-
-# Monitoramento #
+############ FORMULÁRIOS DE MONITORAMENTO ############
+### Monitoramento ###
 @admin.register(Monitoramento) # chama diretamente
 class MonitoramentoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
-    list_display = ("iniciativa",)
+    list_display = ("meta",)
     #list_editable = ("status", "execucao_fisica",) # permite editar do preview
     #list_filter = ("status",) # cria filtros
-    # search_fields = ("iniciativa", "status",)
+    # search_fields = ("meta", "status",)
 
-# Etapa #
-# admin.site.register(Etapa)
-
-# Monitoramento Etapa#
+### Monitoramento Etapa ###
 @admin.register(MonitoramentoEtapa) # chama diretamente
 class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("etapa", "status", "execucao_fisica",)
     list_editable = ("status", "execucao_fisica",) # permite editar do preview
     list_filter = ("status",) # cria filtros
-    # search_fields = ("iniciativa", "status",)
+    # search_fields = ("meta", "status",)
 # admin.site.register(Monitoramento, MonitoramentoAdmin) sintaxe sem @ e com .site
+
+### Monitoramento Etapa ###
+@admin.register(MonitoramentoSubetapa) # chama diretamente
+class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    list_display = ("subetapa",)
+    # search_fields = ("meta", "status",)
+# admin.site.register(Monitoramento, MonitoramentoAdmin) sintaxe sem @ e com .site
+
+############ MODELOS INLINE ############
+### Produto ###
+@admin.register(Produto)
+class ProdutoAdmin(ImportExportModelAdmin):
+    list_display = ('produto_nm',)
+
+### Fontes ###
+@admin.register(Fontes)
+class FontesAdmin(ImportExportModelAdmin):
+    list_display = ('fonte_cd',)
