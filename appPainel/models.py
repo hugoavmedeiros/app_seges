@@ -210,7 +210,7 @@ class Municipio(models.Model):
     macro_num = models.CharField(max_length=10, verbose_name = _("Núm. da Macrorregião"), default="-")
     rd = models.CharField(max_length=30, verbose_name = _("Região de Desenvolvimento"), default="-")
     populacao = models.IntegerField(verbose_name = _("População"), default=0)
-    renda_per_capta = models.FloatField(verbose_name = _("Renda per Capta"), default=0)
+    renda_per_capta = models.FloatField(verbose_name = _("PIB per Capita"), default=0)
 
     def publish(self):
         self.published_date = date.today()
@@ -361,7 +361,7 @@ class Meta(models.Model):
         self.save()
 
     def __str__(self):
-        return self.meta
+        return str(self.meta)
     
     class Meta:
         verbose_name_plural = "Meta"
@@ -425,7 +425,7 @@ class Monitoramento(models.Model):
     #data_termino_planejado = models.DateField(default=date.today, verbose_name = _("Data Planejada - Término"))
     #data_termino_atualizado = models.DateField(blank=True, null=True, verbose_name = _("Data Atualizada - Término"))
     execucao_fisica = models.DecimalField(
-        max_digits=3, decimal_places=1, default=Decimal(0), validators=PERCENTAGE_VALIDATOR, verbose_name = _("Execução Física")
+        max_digits=4, decimal_places=1, default=Decimal(0), validators=PERCENTAGE_VALIDATOR, verbose_name = _("Execução Física")
         )
     observacao = models.TextField(verbose_name = _("Observação"))
     link_fotos = models.URLField(blank=True, null=True, max_length=500, verbose_name = _("Link de Fotos"))
@@ -441,7 +441,7 @@ class Monitoramento(models.Model):
         self.save()
 
     def __str__(self):
-        return self.meta
+         return self.meta.meta
 
 ### Monitoramento de Etapa ###
 class MonitoramentoEtapa(models.Model):
@@ -455,7 +455,7 @@ class MonitoramentoEtapa(models.Model):
     data_termino_planejado = models.DateField(default=date.today, verbose_name = _("Data Planejada - Término"))
     data_termino_atualizado = models.DateField(blank=True, null=True, verbose_name = _("Data Atualizada - Término"))
     execucao_fisica = models.DecimalField(
-        max_digits=3, decimal_places=1, default=Decimal(0), validators=PERCENTAGE_VALIDATOR, verbose_name = _("Execução Física")
+        max_digits=4, decimal_places=1, default=Decimal(0), validators=PERCENTAGE_VALIDATOR, verbose_name = _("Execução Física")
         )
     observacao = models.TextField(verbose_name = _("Observação"))
     link_fotos = models.URLField(blank=True, null=True, max_length=500, verbose_name = _("Link de Fotos"))
@@ -471,7 +471,7 @@ class MonitoramentoEtapa(models.Model):
         self.save()
 
     def __str__(self):
-        return self.status
+        return self.status.status_nm
 
 ### Monitoramento de Subetapa ###
 class MonitoramentoSubetapa(models.Model):
@@ -493,7 +493,7 @@ class MonitoramentoSubetapa(models.Model):
         self.save()
 
     def __str__(self):
-        return self.subetapa
+        return self.subetapa.subetapa
 
 ############ MODELOS INLINE ############
 ### Fontes Meta ###
@@ -521,7 +521,7 @@ class FontesMeta(models.Model):
         self.save()
 
     def __str__(self):
-        return self.meta
+        return self.meta.meta
     
 ### Produtos Meta ###
 class ProdutosMeta(models.Model):
@@ -545,7 +545,7 @@ class ProdutosMeta(models.Model):
         self.save()
 
     def __str__(self):
-        return self.meta
+        return self.meta.meta
 
 ### Produtos Etapa ###
 class ProdutosEtapa(models.Model):
@@ -569,4 +569,4 @@ class ProdutosEtapa(models.Model):
         self.save()
 
     def __str__(self):
-        return self.etapa
+        return self.etapa.etapa
