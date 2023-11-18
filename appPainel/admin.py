@@ -7,6 +7,10 @@ from import_export.admin import ImportExportActionModelAdmin, ImportExportModelA
 # Modelosl
 from .models import Ano, Tema, Tipo, Status, TipoPrograma, TipoAcao, Eixo, Programa, Acao, Secretaria, Orgao, Responsavel, Municipio, Meta, Monitoramento, Etapa, Subetapa, MonitoramentoEtapa, MonitoramentoSubetapa, Fontes, FontesMeta, Produto, ProdutosMeta, ProdutosEtapa
 
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.utils.html import format_html
+
 admin.site.site_header = 'Painel de Controle' # Muda do site Admin
 
 ######### FORMULÁRIOS DE APOIO ##########
@@ -134,11 +138,40 @@ class MonitoramentoAdmin(ImportExportModelAdmin): # lista_display permite mostra
 ### Monitoramento Etapa ###
 @admin.register(MonitoramentoEtapa) # chama diretamente
 class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
-    list_display = ("etapa", "status", "execucao_fisica",)
+    list_display = ("meta", "etapa", "status", "execucao_fisica",)
     list_editable = ("status", "execucao_fisica",) # permite editar do preview
-    list_filter = ("status",) # cria filtros
+    list_filter = ("meta", "status",) # cria filtros
     # search_fields = ("meta", "status",)
-# admin.site.register(Monitoramento, MonitoramentoAdmin) sintaxe sem @ e com .site
+# admin.site.register(Monitoramento, MonitoramentoAdmin) sintaxe sem @ e com .sitez
+
+    change_form_template = "admin/add_form.html"
+
+    #def custom_button(self, obj):
+    #    url = reverse('admin:appPainel_monitoramentoetapa_add') 
+    #    url += f"?meta={obj.meta}"  
+    #    return format_html('<a class="button" href="{}">Enviar para URL</a>', url)
+    #custom_button.short_description = 'Ação Personalizada'
+
+    #def add_view(self, request, form_url='', extra_context=None):
+    #    extra_context = extra_context or {}
+    #    extra_context['meta_value'] = request.GET.get('meta', '')
+    #    return super().add_view(request, form_url=form_url, extra_context=extra_context)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "etapa":
+        
+            meta_value = request.GET.getlist('meta')
+            first_meta_value = meta_value[0] if meta_value else int(1)
+            meta_id = int(first_meta_value)  
+
+            if meta_value:
+            # Filtrar o queryset com base no valor do campo "eixo_estrategico"
+                kwargs["queryset"] = Etapa.objects.filter(meta=meta_id)
+            else:
+            # Se o valor não estiver presente, você pode optar por mostrar todos os programas ou tomar alguma outra ação padrão
+                kwargs["queryset"] = Etapa.objects.filter(meta=1)
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 ### Monitoramento Etapa ###
 @admin.register(MonitoramentoSubetapa) # chama diretamente

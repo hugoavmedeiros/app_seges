@@ -445,6 +445,7 @@ class Monitoramento(models.Model):
 
 ### Monitoramento de Etapa ###
 class MonitoramentoEtapa(models.Model):
+    meta = models.ForeignKey(Meta, on_delete=models.CASCADE, verbose_name = _("Nome da Meta"))
     etapa = models.ForeignKey(Etapa, on_delete=models.CASCADE, verbose_name = _("Nome da Etapa"))
     
     status = models.ForeignKey(Status, on_delete=models.CASCADE, verbose_name = _("Status"))

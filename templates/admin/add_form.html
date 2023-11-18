@@ -1,0 +1,42 @@
+{% extends 'admin/change_form.html' %}
+
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+    <div class="submit-row">
+        <input type="submit" value="Make Unique" name="_make-unique" id="make-unique-button">
+    </div>
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const makeUniqueButton = document.getElementById('make-unique-button');
+            const metaField = document.getElementById('id_meta');
+
+            makeUniqueButton.addEventListener('click', function (e) {
+                // Armazena o valor atual de 'meta'
+                const currentMetaValue = metaField.value;
+
+                // Converte 'currentMetaValue' para inteiro
+                const metaId = parseInt(currentMetaValue);
+
+                // Verifica se a conversão foi bem-sucedida
+                if (!isNaN(metaId)) {
+                    // Cancela a submissão padrão do formulário
+                    e.preventDefault();
+
+                    // Adicione lógica aqui para manipular o clique do botão
+                    const redirectUrl = `/appPainel/monitoramentoetapa/add/?meta=${metaId}`;
+
+                    // Use setTimeout para dar tempo à mudança do campo 'meta' ser processada
+                    setTimeout(function () {
+                        window.location.href = redirectUrl;
+                    }, 0);
+                } else {
+                    console.error('Erro ao converter valor de meta para inteiro:', currentMetaValue);
+                }
+            });
+        });
+    </script>
+{% endblock %}
