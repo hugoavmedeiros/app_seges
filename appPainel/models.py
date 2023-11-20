@@ -251,7 +251,7 @@ class Produto(models.Model): # produtos gerados pelas metas
         self.save()
 
     def __str__(self):
-        return self.produto_nm + " " + self.produto_cd
+        return self.produto_nm
 
 ########### MODELOS ORÇAMENTÁRIOS ###########
 ### Fonte ###
