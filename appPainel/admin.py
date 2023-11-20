@@ -138,8 +138,8 @@ class MonitoramentoAdmin(ImportExportModelAdmin): # lista_display permite mostra
 ### Monitoramento Etapa ###
 @admin.register(MonitoramentoEtapa) # chama diretamente
 class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
-    list_display = ("meta", "etapa", "status", "execucao_fisica",)
-    list_editable = ("status", "execucao_fisica",) # permite editar do preview
+    list_display = ("etapa", "meta", "status", "execucao_fisica",)
+    list_editable = ("meta", "status", "execucao_fisica",) # permite editar do preview
     list_filter = ("meta", "status",) # cria filtros
     # search_fields = ("meta", "status",)
 # admin.site.register(Monitoramento, MonitoramentoAdmin) sintaxe sem @ e com .sitez
