@@ -174,6 +174,18 @@ class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite m
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+    def get_readonly_fields(self, request, obj=None):
+        # Certifique-se de retornar uma tupla ou lista
+        if obj:  # Verifica se está editando um objeto existente
+            return ['meta', 'etapa']
+        return []
+    
+    fieldsets = (
+        ('Geral', {
+            'fields': ('meta', 'etapa', 'status', 'execucao_fisica', 'data_inicio_planejado', 'data_inicio_atualizado', 'data_termino_planejado', 'data_termino_atualizado', 'observacao', 'link_fotos', 'link_repositorio'),
+        }),
+    )
+    
 ### Monitoramento Etapa ###
 #@admin.register(MonitoramentoSubetapa) # chama diretamente
 #class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
