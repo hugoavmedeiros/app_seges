@@ -130,32 +130,33 @@ admin.site.register(Etapa, EtapaAdmin)
 ### Monitoramento ###
 @admin.register(Monitoramento) # chama diretamente
 class MonitoramentoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
-    list_display = ("meta",)
-    #list_editable = ("status", "execucao_fisica",) # permite editar do preview
-    #list_filter = ("status",) # cria filtros
-    # search_fields = ("meta", "status",)
+   list_display = ("meta", "status", "execucao_fisica",)
+   list_editable = ("status", "execucao_fisica",) # permite editar do preview
+   list_filter = ("meta", "status",) # cria filtros
 
 ### Monitoramento Etapa ###
+class MonitoramentoSubetapaInLine(admin.StackedInline):  # ou admin.StackedInline
+        model = MonitoramentoSubetapa
+        extra = 0
+
 @admin.register(MonitoramentoEtapa) # chama diretamente
 class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+    
+    inlines = [MonitoramentoSubetapaInLine]
+    
+    def get_formset(self, request, obj=None, **kwargs):
+        formset = super().get_formset(request, obj, **kwargs)
+        
+        if obj:
+            formset.form.base_fields['etapa'].queryset = MonitoramentoEtapa.objects.filter(pk=obj.pk)
+
+        return formset
+
     list_display = ("etapa", "meta", "status", "execucao_fisica",)
     list_editable = ("meta", "status", "execucao_fisica",) # permite editar do preview
     list_filter = ("meta", "status",) # cria filtros
-    # search_fields = ("meta", "status",)
-# admin.site.register(Monitoramento, MonitoramentoAdmin) sintaxe sem @ e com .sitez
 
     change_form_template = "admin/add_form.html"
-
-    #def custom_button(self, obj):
-    #    url = reverse('admin:appPainel_monitoramentoetapa_add') 
-    #    url += f"?meta={obj.meta}"  
-    #    return format_html('<a class="button" href="{}">Enviar para URL</a>', url)
-    #custom_button.short_description = 'Ação Personalizada'
-
-    #def add_view(self, request, form_url='', extra_context=None):
-    #    extra_context = extra_context or {}
-    #    extra_context['meta_value'] = request.GET.get('meta', '')
-    #    return super().add_view(request, form_url=form_url, extra_context=extra_context)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "etapa":
@@ -174,9 +175,9 @@ class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite m
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 ### Monitoramento Etapa ###
-@admin.register(MonitoramentoSubetapa) # chama diretamente
-class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
-    list_display = ("subetapa",)
+#@admin.register(MonitoramentoSubetapa) # chama diretamente
+#class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
+#    list_display = ("subetapa",)
     # search_fields = ("meta", "status",)
 # admin.site.register(Monitoramento, MonitoramentoAdmin) sintaxe sem @ e com .site
 
