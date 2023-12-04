@@ -151,11 +151,11 @@ class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite m
     
     #inlines = [MonitoramentoSubetapaInLine]
 
-    list_display = ("etapa", "meta", "status", "execucao_fisica",)
-    list_editable = ("meta", "status", "execucao_fisica",) # permite editar do preview
+    list_display = ("etapa", "status", "execucao_fisica",)
+    list_editable = ("status", "execucao_fisica",) # permite editar do preview
     list_filter = ("meta", "status",) # cria filtros
 
-    change_form_template = "admin/add_form.html"
+    change_form_template = "admin/add_form_botao.html"
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "etapa":
@@ -230,7 +230,7 @@ class MonitoramentoSubetapaAdmin(ImportExportModelAdmin):
         return obj.subetapa.subetapa # Substitua 'meta' pelo nome correto do campo em MonitoramentoEtapa
 
     meta_nome.short_description = 'Nome da Meta'
-    subetapa_nome.short_description = 'Nome da Meta'
+    subetapa_nome.short_description = 'Nome da Subetapa'
 
     fieldsets = (
         ('Geral', {
