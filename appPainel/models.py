@@ -14,6 +14,8 @@ from decimal import Decimal
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext as _
 
+#from smart_selects.db_fields import ChainedForeignKey
+
 PERCENTAGE_VALIDATOR = [MinValueValidator(0), MaxValueValidator(100)]
 
 # tipo_lista = (
@@ -409,7 +411,7 @@ class Subetapa(models.Model):
          self.save()
 
      def __str__(self):
-        return self.subetapa
+        return f"{self.etapa.meta} | {self.etapa.etapa} | {self.subetapa}" # concatena para ser usado depois no Monitoramento SubEtapa
      
      class Meta:
         verbose_name_plural = "Subetapa"
@@ -472,12 +474,12 @@ class MonitoramentoEtapa(models.Model):
         self.save()
 
     def __str__(self):
-        return self.status.status_nm
+        return self.etapa.etapa
 
 ### Monitoramento de Subetapa ###
 class MonitoramentoSubetapa(models.Model):
     etapa = models.ForeignKey(MonitoramentoEtapa, on_delete=models.CASCADE, verbose_name = _("Nome da Etapa"), default=1)
-    subetapa = models.ForeignKey(Subetapa, on_delete=models.CASCADE, verbose_name = _("Nome da Subetapa"))
+    subetapa = models.ForeignKey(Subetapa, on_delete=models.CASCADE, verbose_name = _("Meta | Etapa | Subetapa"))
     
     data_inicio_planejado = models.DateField(default=date.today, verbose_name = _("Data Planejada - Início"))
     data_inicio_atualizado = models.DateField(blank=True, null=True, verbose_name = _("Data Atualizada - Início"))
@@ -495,7 +497,9 @@ class MonitoramentoSubetapa(models.Model):
         self.save()
 
     def __str__(self):
-        return self.subetapa.subetapa
+        return self.etapa.meta # retorna o nome da etapa atraelado à subetapa
+    
+    __str__.short_description = 'Meta' # customiza o nome do __str__
 
 ############ MODELOS INLINE ############
 ### Fontes Meta ###

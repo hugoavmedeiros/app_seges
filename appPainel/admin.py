@@ -11,6 +11,13 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.html import format_html
 
+from django import forms
+
+from django.utils.translation import gettext_lazy as _
+from django.forms import BaseInlineFormSet, ModelForm
+
+from django.db import models
+
 admin.site.site_header = 'Painel de Controle' # Muda do site Admin
 
 ######### FORMULÁRIOS DE APOIO ##########
@@ -142,15 +149,7 @@ class MonitoramentoSubetapaInLine(admin.StackedInline):  # ou admin.StackedInlin
 @admin.register(MonitoramentoEtapa) # chama diretamente
 class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     
-    inlines = [MonitoramentoSubetapaInLine]
-    
-    def get_formset(self, request, obj=None, **kwargs):
-        formset = super().get_formset(request, obj, **kwargs)
-        
-        if obj:
-            formset.form.base_fields['etapa'].queryset = MonitoramentoEtapa.objects.filter(pk=obj.pk)
-
-        return formset
+    #inlines = [MonitoramentoSubetapaInLine]
 
     list_display = ("etapa", "meta", "status", "execucao_fisica",)
     list_editable = ("meta", "status", "execucao_fisica",) # permite editar do preview
@@ -166,17 +165,15 @@ class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite m
             meta_id = int(first_meta_value)  
 
             if meta_value:
-            # Filtrar o queryset com base no valor do campo "eixo_estrategico"
+            # Filtrar o queryset com base no valor do campo "meta"
                 kwargs["queryset"] = Etapa.objects.filter(meta=meta_id)
             else:
-            # Se o valor não estiver presente, você pode optar por mostrar todos os programas ou tomar alguma outra ação padrão
                 kwargs["queryset"] = Etapa.objects.filter(meta=1)
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def get_readonly_fields(self, request, obj=None):
-        # Certifique-se de retornar uma tupla ou lista
-        if obj:  # Verifica se está editando um objeto existente
+        if obj:
             return ['meta', 'etapa']
         return []
     
@@ -203,3 +200,40 @@ class ProdutoAdmin(ImportExportModelAdmin):
 @admin.register(Fontes)
 class FontesAdmin(ImportExportModelAdmin):
     list_display = ('fonte_cd', 'fonte_nm',)
+
+#### CAMPO CUSTOMIZADO
+#class ChildModelForm(forms.ModelForm):
+#    class Meta:
+#        model = MonitoramentoSubetapa
+#        fields = '__all__'
+
+#    parent = forms.ModelChoiceField(
+#        queryset=MonitoramentoEtapa.objects.all(),
+#        widget=forms.Select(attrs={'style': 'width: 200px;'}),  # Adjust the style as needed
+#        label='Select Parent'
+#    )
+
+@admin.register(MonitoramentoSubetapa)
+class MonitoramentoSubetapaAdmin(ImportExportModelAdmin):
+    list_display = ('meta_nome', 'etapa', 'subetapa_nome',)
+
+    list_filter = ('etapa__meta', 'etapa__etapa') # cria filtros
+
+    change_form_template = "admin/add_form_geral.html"
+
+    def meta_nome(self, obj):
+        # Retorna o nome da etapa associado à subetapa
+        return obj.etapa.meta # Substitua 'meta' pelo nome correto do campo em MonitoramentoEtapa
+    
+    def subetapa_nome(self, obj):
+        # Retorna o nome da etapa associado à subetapa
+        return obj.subetapa.subetapa # Substitua 'meta' pelo nome correto do campo em MonitoramentoEtapa
+
+    meta_nome.short_description = 'Nome da Meta'
+    subetapa_nome.short_description = 'Nome da Meta'
+
+    fieldsets = (
+        ('Geral', {
+            'fields': ('subetapa', 'data_inicio_planejado', 'data_inicio_atualizado', 'data_termino_planejado', 'data_termino_atualizado'),
+        }),
+    )

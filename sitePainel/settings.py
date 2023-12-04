@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'appPainel',
     "import_export",
+#    'smart_selects',
 ]
 
 MIDDLEWARE = [
@@ -233,3 +234,5 @@ JAZZMIN_UI_TWEAKS = {
     },
     "actions_sticky_top": False
 }
+
+QUERY_URL = True
