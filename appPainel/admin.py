@@ -217,7 +217,7 @@ class FontesAdmin(ImportExportModelAdmin):
 class MonitoramentoSubetapaAdmin(ImportExportModelAdmin):
     list_display = ('meta_nome', 'etapa_nome', 'subetapa_nome',)
 
-    #list_filter = ('etapa__meta', 'etapa__etapa') # cria filtros
+    list_filter = ('subetapa__etapa__meta', 'subetapa__etapa__etapa') # cria filtros
 
     change_form_template = "admin/add_form_geral.html"
 
@@ -234,6 +234,7 @@ class MonitoramentoSubetapaAdmin(ImportExportModelAdmin):
         return obj.subetapa.subetapa 
 
     meta_nome.short_description = 'Nome da Meta'
+    etapa_nome.short_description = 'Nome da Etapa'
     subetapa_nome.short_description = 'Nome da Subetapa'
 
     fieldsets = (
