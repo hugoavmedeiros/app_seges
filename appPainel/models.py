@@ -478,7 +478,7 @@ class MonitoramentoEtapa(models.Model):
 
 ### Monitoramento de Subetapa ###
 class MonitoramentoSubetapa(models.Model):
-    etapa = models.ForeignKey(MonitoramentoEtapa, on_delete=models.CASCADE, verbose_name = _("Nome da Etapa"), default=1)
+    #etapa = models.ForeignKey(MonitoramentoEtapa, on_delete=models.CASCADE, verbose_name = _("Nome da Etapa"), default=1)
     subetapa = models.ForeignKey(Subetapa, on_delete=models.CASCADE, verbose_name = _("Meta | Etapa | Subetapa"))
     
     data_inicio_planejado = models.DateField(default=date.today, verbose_name = _("Data Planejada - Início"))
@@ -497,7 +497,8 @@ class MonitoramentoSubetapa(models.Model):
         self.save()
 
     def __str__(self):
-        return self.etapa.meta # retorna o nome da etapa atraelado à subetapa
+        return f"{self.subetapa.etapa.meta} | {self.subetapa.etapa} | {self.subetapa}"
+    #self.etapa.meta # retorna o nome da etapa atraelado à subetapa
     
     __str__.short_description = 'Meta' # customiza o nome do __str__
 

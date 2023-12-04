@@ -215,19 +215,23 @@ class FontesAdmin(ImportExportModelAdmin):
 
 @admin.register(MonitoramentoSubetapa)
 class MonitoramentoSubetapaAdmin(ImportExportModelAdmin):
-    list_display = ('meta_nome', 'etapa', 'subetapa_nome',)
+    list_display = ('meta_nome', 'etapa_nome', 'subetapa_nome',)
 
-    list_filter = ('etapa__meta', 'etapa__etapa') # cria filtros
+    #list_filter = ('etapa__meta', 'etapa__etapa') # cria filtros
 
     change_form_template = "admin/add_form_geral.html"
 
     def meta_nome(self, obj):
         # Retorna o nome da etapa associado à subetapa
-        return obj.etapa.meta # Substitua 'meta' pelo nome correto do campo em MonitoramentoEtapa
+        return obj.subetapa.etapa.meta 
     
+    def etapa_nome(self, obj):
+        # Retorna o nome da etapa associado à subetapa
+        return obj.subetapa.etapa.etapa
+
     def subetapa_nome(self, obj):
         # Retorna o nome da etapa associado à subetapa
-        return obj.subetapa.subetapa # Substitua 'meta' pelo nome correto do campo em MonitoramentoEtapa
+        return obj.subetapa.subetapa 
 
     meta_nome.short_description = 'Nome da Meta'
     subetapa_nome.short_description = 'Nome da Subetapa'
