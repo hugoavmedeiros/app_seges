@@ -288,6 +288,7 @@ class Eixo(models.Model): # objetivos estratégicos do governo
         return self.eixo_estrategico + " " + self.eixo_estrategico_cd
     
     class Meta:
+        verbose_name = "Objetivo"
         verbose_name_plural = "Objetivo Estratégico"
 
 ### Programa ###

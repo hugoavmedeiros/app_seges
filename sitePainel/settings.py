@@ -151,12 +151,13 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JAZZMIN_SETTINGS = {
+    "filters_position": "right",
     "site_title": "SEGES",
     "site_header": "SEGES", 
     "site_brand": "SEGES",
     "site_logo": "vendor/adminlte/img/seplagtransparente.png",
-    "login_logo": "vendor/adminlte/img/seplagtransparente_login.png",
     "site_logo_classes": "squared",
+    "login_logo": "vendor/adminlte/img/seplagtransparente_login.png",
     "site_icon": "vendor/adminlte/img/favicon.png",
     "welcome_sign": "Bem-vindo(a)",
     "copyright": "Instituto de Gestão Pública de Pernambuco",
@@ -192,14 +193,38 @@ JAZZMIN_SETTINGS = {
         "appPainel.MonitoramentoSubetapa",
         ],
     "show_ui_builder": False,
+    
+    ##BUSCA
+    "search_bar": True,
+    "search_model": ["appPainel.Meta"],
+    
     "changeform_format": "horizontal_tabs",
     "changeform_format_overrides": {
         "auth.user": "collapsible",
         "auth.group": "collapsible",
     },
     #### BARRA LATERAL ####
+    
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "appPainel.Monitoramento": "fas fa-calendar",
+        "appPainel.MonitoramentoEtapa": "fas fa-calendar",
+        "appPainel.MonitoramentoSubEtapa": "fas fa-calendar",
+        "appPainel.Eixo": "fas fa-wallet",
+        "appPainel.Programa": "fas fa-wallet",
+        "appPainel.Acao": "fas fa-wallet",
+        "appPainel.Fontes": "fas fa-wallet",
+    },
+    
+    "default_icon_children": "fas fa-square",
+
     "show_sidebar": True,
     "navigation_expanded": True,
+    "search_models": [
+        {"app": "appPainel", "model": "Meta"},
+    ],
 }
 
 JAZZMIN_UI_TWEAKS = {
@@ -212,16 +237,17 @@ JAZZMIN_UI_TWEAKS = {
     "navbar": "navbar-white navbar-light",
     "no_navbar_border": False,
     "navbar_fixed": False,
-    "layout_boxed": False,
+    "layout_boxed": True,
     "footer_fixed": False,
     "sidebar_fixed": False,
-    "sidebar": "sidebar-light-navy",
+    "sidebar": 'sidebar-light-navy',
     "sidebar_nav_small_text": False,
     "sidebar_disable_expand": False,
     "sidebar_nav_child_indent": False,
     "sidebar_nav_compact_style": True,
-    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_legacy_style": True,
     "sidebar_nav_flat_style": True,
+    #"theme": "sandstone",
     "theme": "sandstone",
     "dark_mode_theme": None,
     "button_classes": {

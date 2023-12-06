@@ -1,5 +1,7 @@
 # bibliotecas
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.forms import inlineformset_factory
 from django.http import HttpResponse
 from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin
@@ -10,6 +12,7 @@ from .models import Ano, Tema, Tipo, Status, TipoPrograma, TipoAcao, Eixo, Progr
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils import timezone
 
 from django import forms
 
@@ -19,6 +22,10 @@ from django.forms import BaseInlineFormSet, ModelForm
 from django.db import models
 
 admin.site.site_header = 'Painel de Controle' # Muda do site Admin
+
+######### FUNÇÕES DE APOIO ##############
+
+
 
 ######### FORMULÁRIOS DE APOIO ##########
 
@@ -112,6 +119,7 @@ class MetaAdmin(ImportExportModelAdmin):
     model = Meta
     inlines = [FonteMetaInline, ProdutoMetaInline]
     list_display = ['acao', 'meta']
+    list_filter = ('secretaria', 'acao__programa__eixo_estrategico', 'meta', )
 
 admin.site.register(Meta, MetaAdmin)
 
@@ -128,6 +136,7 @@ class EtapaAdmin(ImportExportModelAdmin):
     model = Etapa
     inlines = [ProdutoEtapaInline, SubetapaInline]
     list_display = ['meta', 'etapa']
+    list_filter = ('meta', 'meta__secretaria',)
 
 admin.site.register(Etapa, EtapaAdmin)
 
@@ -213,11 +222,27 @@ class FontesAdmin(ImportExportModelAdmin):
 #        label='Select Parent'
 #    )
 
+class VencimentoProximoFilter(admin.SimpleListFilter):
+    title = 'Vencimento Próximo'
+    parameter_name = 'vencimento_proximo'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('30', 'Nos Próximos 30 Dias'),
+            ('today', 'Hoje'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == '30':
+            return queryset.filter(data_termino_planejado__gte=timezone.now(), data_termino_planejado__lte=timezone.now() + timezone.timedelta(days=30))
+        elif self.value() == 'today':
+            return queryset.filter(data_termino_planejado=timezone.now().date())
+
 @admin.register(MonitoramentoSubetapa)
 class MonitoramentoSubetapaAdmin(ImportExportModelAdmin):
     list_display = ('meta_nome', 'etapa_nome', 'subetapa_nome',)
 
-    list_filter = ('subetapa__etapa__meta', 'subetapa__etapa__etapa') # cria filtros
+    list_filter = ('subetapa__etapa__meta', 'subetapa__etapa__etapa', VencimentoProximoFilter) # cria filtros
 
     change_form_template = "admin/add_form_geral.html"
 
