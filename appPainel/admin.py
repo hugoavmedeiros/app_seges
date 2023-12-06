@@ -71,12 +71,17 @@ class EixoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos 
 class EixoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("programa", "programa_cd",)
 
-# Ações - Formulário #
+    change_form_template = "admin/add_form_geral.html"
 
+    list_filter = ("eixo_estrategico",) # cria filtros
+
+# Ações - Formulário #
 @admin.register(Acao) # chama diretamente
 class AcaoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("programa", "acao",)
-    list_filter = ("programa",) # cria filtros    
+    list_filter = ("programa",) # cria filtros
+
+    change_form_template = "admin/add_form_geral.html"    
 
 # Secretaria - Formulário #
 class SecretariaAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
@@ -87,6 +92,8 @@ admin.site.register(Secretaria, SecretariaAdmin)
 # Órgão - Formulário #
 class OrgaoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = ("secretaria",)
+
+    change_form_template = "admin/add_form_geral.html"
 admin.site.register(Orgao, OrgaoAdmin)
 
 # Reponsável - Formulário #
@@ -121,6 +128,10 @@ class MetaAdmin(ImportExportModelAdmin):
     list_display = ['acao', 'meta']
     list_filter = ('secretaria', 'acao__programa__eixo_estrategico', 'meta', )
 
+    filter_horizontal = ('municipio',)
+
+    change_form_template = "admin/add_form_geral.html"
+
 admin.site.register(Meta, MetaAdmin)
 
 ### Etapa ###
@@ -136,7 +147,11 @@ class EtapaAdmin(ImportExportModelAdmin):
     model = Etapa
     inlines = [ProdutoEtapaInline, SubetapaInline]
     list_display = ['meta', 'etapa']
-    list_filter = ('meta', 'meta__secretaria',)
+    list_filter = ('meta',)
+
+    change_form_template = "admin/add_form_geral.html"
+
+    filter_horizontal = ('municipio',)
 
 admin.site.register(Etapa, EtapaAdmin)
 
@@ -149,6 +164,8 @@ class MonitoramentoAdmin(ImportExportModelAdmin): # lista_display permite mostra
    list_display = ("meta", "status", "execucao_fisica",)
    list_editable = ("status", "execucao_fisica",) # permite editar do preview
    list_filter = ("meta", "status",) # cria filtros
+
+   change_form_template = "admin/add_form_geral.html"
 
 ### Monitoramento Etapa ###
 class MonitoramentoSubetapaInLine(admin.StackedInline):  # ou admin.StackedInline

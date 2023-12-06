@@ -274,8 +274,8 @@ class Fontes(models.Model): # fontes das metas
 
 ### Eixo ###
 class Eixo(models.Model): # objetivos estratégicos do governo
-    eixo_estrategico = models.CharField(_("Nome do Eixo"), max_length=255)
-    eixo_estrategico_cd = models.CharField(_("Código do Eixo"), max_length=10, unique=True)
+    eixo_estrategico = models.CharField(_("Nome do Objetivo"), max_length=255)
+    eixo_estrategico_cd = models.CharField(_("Código do Objetivo"), max_length=10, unique=True)
     ano = models.ForeignKey(Ano, on_delete=models.CASCADE, verbose_name = _("Ano"))
     descricao = models.TextField(blank=True, null=True, verbose_name = _("Descrição"))
     history = HistoricalRecords()
