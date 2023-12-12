@@ -20,6 +20,7 @@ from django.utils.translation import gettext_lazy as _
 from django.forms import BaseInlineFormSet, ModelForm
 
 from django.db import models
+from django.db.models import Q
 
 admin.site.site_header = 'Painel de Controle' # Muda do site Admin
 
@@ -163,8 +164,9 @@ admin.site.register(Etapa, EtapaAdmin)
 class MonitoramentoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
    list_display = ("meta", "status", "execucao_fisica",)
    list_editable = ("status", "execucao_fisica",) # permite editar do preview
-   list_filter = ("meta", "status",) # cria filtros
-
+   search_fields = ['meta__secretaria__secretaria','meta__acao__programa__eixo_estrategico__eixo_estrategico',]
+   list_filter = ("meta", "status", ) # cria filtros
+   
    change_form_template = "admin/add_form_geral.html"
 
 ### Monitoramento Etapa ###
@@ -177,9 +179,11 @@ class MonitoramentoEtapaAdmin(ImportExportModelAdmin): # lista_display permite m
     
     #inlines = [MonitoramentoSubetapaInLine]
 
-    list_display = ("etapa", "status", "execucao_fisica",)
+    list_display = ("meta", "etapa", "status", "execucao_fisica",)
     list_editable = ("status", "execucao_fisica",) # permite editar do preview
     list_filter = ("meta", "status",) # cria filtros
+
+    search_fields = ['meta__secretaria__secretaria', 'meta__acao__programa__eixo_estrategico__eixo_estrategico',]
 
     change_form_template = "admin/add_form_botao.html"
 
@@ -260,6 +264,8 @@ class MonitoramentoSubetapaAdmin(ImportExportModelAdmin):
     list_display = ('meta_nome', 'etapa_nome', 'subetapa_nome',)
 
     list_filter = ('subetapa__etapa__meta', 'subetapa__etapa__etapa', VencimentoProximoFilter) # cria filtros
+
+    search_fields = ['subetapa__etapa__meta__secretaria__secretaria','subetapa__etapa__meta__acao__programa__eixo_estrategico__eixo_estrategico',]
 
     change_form_template = "admin/add_form_geral.html"
 
