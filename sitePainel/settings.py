@@ -195,8 +195,8 @@ JAZZMIN_SETTINGS = {
     "show_ui_builder": False,
     
     ##BUSCA
-    "search_bar": True,
-    "search_model": ["appPainel.Meta"],
+    #"search_bar": True,
+    #"search_model": ["appPainel.Meta"],
     
     "changeform_format": "horizontal_tabs",
     "changeform_format_overrides": {
@@ -204,7 +204,7 @@ JAZZMIN_SETTINGS = {
         "auth.group": "collapsible",
     },
     #### BARRA LATERAL ####
-    
+
     "icons": {
         "auth": "fas fa-users-cog",
         "auth.user": "fas fa-user",
@@ -235,24 +235,24 @@ JAZZMIN_SETTINGS = {
 
     "show_sidebar": True,
     "navigation_expanded": False,
-    "search_models": [
-        {"app": "appPainel", "model": "Meta"},
-    ],
+    #"search_models": [
+    #    {"app": "appPainel", "model": "Meta"},
+    #],
 }
 
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
     "footer_small_text": False,
     "body_small_text": False,
-    "brand_small_text": True,
+    "brand_small_text": False,
     "brand_colour": False,
     "accent": "accent-navy",
     "navbar": "navbar-white navbar-light",
     "no_navbar_border": False,
-    "navbar_fixed": True,
-    "layout_boxed": True,
+    "navbar_fixed": False,
+    "layout_boxed": False,
     "footer_fixed": False,
-    "sidebar_fixed": False,
+    "sidebar_fixed": True,
     "sidebar": 'sidebar-light-navy',
     "sidebar_nav_small_text": False,
     "sidebar_disable_expand": False,
@@ -271,7 +271,7 @@ JAZZMIN_UI_TWEAKS = {
         "danger": "btn-danger",
         "success": "btn-primary"
     },
-    "actions_sticky_top": False
+    "actions_sticky_top": True
 }
 
 QUERY_URL = True
