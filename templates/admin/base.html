@@ -79,13 +79,13 @@
             <ul class="navbar-nav">
 
 				{% if jazzmin_settings.show_sidebar %}
-                    <li class="nav-item d-md-none">
+
+                    <li class="nav-item d-md-none ml-auto">
     <a class="nav-link" data-widget="pushmenu" href="#" role="button" data-collapsed="true">
         <i class="fas fa-bars"></i>
     </a>
 </li>
 
-<!-- Show a brand link with logo on larger screens (hidden on mobile) -->
 <li class="nav-item d-none d-md-block">
     <div class="navbar-brand">
         <img src="{% static jazzmin_settings.site_logo %}" alt="{{ jazzmin_settings.site_header }} Logo" class="{{ jazzmin_settings.site_logo_classes }} brand-image" style="margin-left: auto; margin-right: 15px;"> <!-- Adjust the margin as needed -->
@@ -212,13 +212,13 @@
         {% if jazzmin_settings.show_sidebar %}
             {% get_side_menu as side_menu_list %}
 
-            <aside class="main-sidebar elevation-4 {{ jazzmin_ui.sidebar_classes }}" id="jazzy-sidebar">
+            <aside class="main-sidebar elevation-4 d-none d-md-block {{ jazzmin_ui.sidebar_classes }}" id="jazzy-sidebar">
                 <a href="{% url 'admin:index' %}" class="brand-link {{ jazzmin_ui.brand_classes }}" id="jazzy-logo">
                     <img src="{% static jazzmin_settings.site_logo %}" alt="{{ jazzmin_settings.site_header }} Logo" class="{{ jazzmin_settings.site_logo_classes }} brand-image elevation-3" style="box-shadow: none !important; opacity: 1">
                     <span class="brand-text font-weight-light">{{ jazzmin_settings.site_brand }}</span>
                 </a>
 
-                <div class="sidebar" style="overflow-y: auto; margin-left: 0;">
+                <div class="sidebar d-none d-md-block" style="overflow-y: auto; margin-left: 0;">
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
                             {% if jazzmin_settings|has_jazzmin_setting:"user_avatar" %}
