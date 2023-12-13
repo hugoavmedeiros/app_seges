@@ -15,6 +15,24 @@
     <!--  Prevent admin panel being crawled by search engines -->
     <meta name="robots" content="none, noarchive">
 
+	<style>
+        #jazzy-sidebar {
+            margin-left: 0;
+        }
+
+        .main-sidebar.elevation-4.sidebar-light-navy {
+            margin-left: 0; 
+        }
+		
+		sidebar {
+        margin-left: 0 !important;
+		}
+
+		.sidebar.active {
+        margin-left: 0 !important;
+		}
+    </style>
+
     <title>{% block title %}{{ title }} | {{ jazzmin_settings.site_title }}{% endblock %}</title>
 
     <!-- Font Awesome Icons -->
@@ -61,9 +79,18 @@
             <ul class="navbar-nav">
 
 				{% if jazzmin_settings.show_sidebar %}
-                    <li class="nav-item">
-                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                    </li>
+                    <li class="nav-item d-md-none">
+    <a class="nav-link" data-widget="pushmenu" href="#" role="button" data-collapsed="true">
+        <i class="fas fa-bars"></i>
+    </a>
+</li>
+
+<!-- Show a brand link with logo on larger screens (hidden on mobile) -->
+<li class="nav-item d-none d-md-block">
+    <div class="navbar-brand">
+        <img src="{% static jazzmin_settings.site_logo %}" alt="{{ jazzmin_settings.site_header }} Logo" class="{{ jazzmin_settings.site_logo_classes }} brand-image" style="margin-left: auto; margin-right: 15px;"> <!-- Adjust the margin as needed -->
+    </div>
+</li>
                 {% else %}
                     <li class="nav-item">
                         <a href="{% url 'admin:index' %}" class="brand-link">
@@ -191,7 +218,7 @@
                     <span class="brand-text font-weight-light">{{ jazzmin_settings.site_brand }}</span>
                 </a>
 
-                <div class="sidebar">
+                <div class="sidebar" style="overflow-y: auto; margin-left: 0;">
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
                             {% if jazzmin_settings|has_jazzmin_setting:"user_avatar" %}
