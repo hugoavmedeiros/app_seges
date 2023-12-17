@@ -1,6 +1,6 @@
-# Painel de Controle (SEGES/SEPLAG)
+# App SEGES (SEGES/SEPLAG)
 
-O Painel de Controle é uma aplicação para coleta de dados desenvolvido pelo Instituto de Gestão Pública de Pernambuco, utilizando Django / Python. <br>
+O App SEGES é uma aplicação para coleta de dados desenvolvida pelo Instituto de Gestão Pública de Pernambuco, utilizando Django / Python. <br>
 
 O ojetivo é coletar dados sobre projetos prioritários do Governo de Pernambuco, para subsidiar a tomada de decisão, o monitoramento e a avaliação de políticas públicas. <br>
 
