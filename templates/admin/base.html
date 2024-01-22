@@ -254,24 +254,120 @@
                                     {% endfor %}
                                 {% endfor %}
                             {% else %}
-                                {% for app in side_menu_list %}
-                                    <li class="nav-item has-treeview">
+                            {% for app in side_menu_list %} {% comment %} criar primeiro a sidebar do app auth. LEMBRETE: apps são referenciados por app_label {% endcomment %}
+                            {% if app.app_label == 'auth'%} {% comment %} testar se o app_label é auth {% endcomment %}
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon {{ app.icon }}"></i>
+                                    <p>{{ app.name|truncatechars:21 }} <i class="fas fa-angle-left right"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none;">
+                                    {% for model in app.models %}
+                                        <li class="nav-item">
+                                            <a href="{% if model.url %}{{ model.url }}{% else %}javascript:void(0){% endif %}" class="nav-link">
+                                                <i class="nav-icon {{ model.icon }}"></i>
+                                                <p>{{ model.name }}</p>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            {% else %} {% comment %} else para os demais apps {% endcomment %}
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon {{ app.icon }}"></i>
+                                    <p>Monitoramento <i class="fas fa-angle-left right"></i></p> {% comment %} nomear o grupo dos modelos principais / mais usados {% endcomment %}
+                                </a>
+                                <ul class="nav nav-treeview" style="display: none;">
+                                    {% for model in app.models %}
+                                        {% if model.name == 'Meta' or model.name == 'Etapa' or model.name == 'Mon. de Metas' or model.name == 'Mon. de Etapas' or model.name == 'Mon. de Subetapas' %} {% comment %} passar os apps que deseja no primeiro grupo {% endcomment %}
+                                        <li class="nav-item">
+                                            <a href="{% if model.url %}{{ model.url }}{% else %}javascript:void(0){% endif %}" class="nav-link">
+                                                <i class="nav-icon {{ model.icon }}"></i>
+                                                <p>{{ model.name }}</p>
+                                            </a>
+                                        </li>
+                                        {% endif %}
+                                    {% endfor %}
+                            
+                                    <li class="nav-item has-treeview"> {% comment %} criar segundo grupo, dentro do grupo de modelos mais frequentes {% endcomment %}
                                         <a href="#" class="nav-link">
                                             <i class="nav-icon {{ app.icon }}"></i>
-                                            <p>{{ app.name|truncatechars:21 }} <i class="fas fa-angle-left right"></i></p>
+                                            <p>Orçamento <i class="fas fa-angle-left right"></i></p> {% comment %} colocar nome do grupo 2 {% endcomment %}
                                         </a>
                                         <ul class="nav nav-treeview" style="display: none;">
                                             {% for model in app.models %}
-                                                <li class="nav-item">
-                                                    <a href="{% if model.url %}{{ model.url }}{% else %}javascript:void(0){% endif %}" class="nav-link">
-                                                        <i class="nav-icon {{ model.icon }}"></i>
-                                                        <p>{{ model.name }}</p>
-                                                    </a>
-                                                </li>
+                                                {% if model.name == 'Objetivo Estratégico' or model.name == 'Programa' or model.name == 'Ação' or model.name == 'Fontes'  %} {% comment %} trocar igualdade por diferença {% endcomment %}
+                                                    <li class="nav-item">
+                                                        <a href="{% if model.url %}{{ model.url }}{% else %}javascript:void(0){% endif %}" class="nav-link">
+                                                            <i class="nav-icon {{ model.icon }}"></i>
+                                                            <p>{{ model.name }}</p>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
                                             {% endfor %}
                                         </ul>
                                     </li>
-                                {% endfor %}
+
+                                    <li class="nav-item has-treeview"> {% comment %} criar segundo grupo, dentro do grupo de modelos mais frequentes {% endcomment %}
+                                        <a href="#" class="nav-link">
+                                            <i class="nav-icon {{ app.icon }}"></i>
+                                            <p>Responsável <i class="fas fa-angle-left right"></i></p> {% comment %} colocar nome do grupo 2 {% endcomment %}
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: none;">
+                                            {% for model in app.models %}
+                                                {% if model.name == 'Secretaria' or model.name == 'Órgão' or model.name == 'Responsável' %} {% comment %} trocar igualdade por diferença {% endcomment %}
+                                                    <li class="nav-item">
+                                                        <a href="{% if model.url %}{{ model.url }}{% else %}javascript:void(0){% endif %}" class="nav-link">
+                                                            <i class="nav-icon {{ model.icon }}"></i>
+                                                            <p>{{ model.name }}</p>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-item has-treeview"> {% comment %} criar segundo grupo, dentro do grupo de modelos mais frequentes {% endcomment %}
+                                        <a href="#" class="nav-link">
+                                            <i class="nav-icon {{ app.icon }}"></i>
+                                            <p>Indicadores <i class="fas fa-angle-left right"></i></p> {% comment %} colocar nome do grupo 2 {% endcomment %}
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: none;">
+                                            {% for model in app.models %}
+                                                {% if model.name == 'Produtos' %} {% comment %} trocar igualdade por diferença {% endcomment %}
+                                                    <li class="nav-item">
+                                                        <a href="{% if model.url %}{{ model.url }}{% else %}javascript:void(0){% endif %}" class="nav-link">
+                                                            <i class="nav-icon {{ model.icon }}"></i>
+                                                            <p>{{ model.name }}</p>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    
+                                    <li class="nav-item has-treeview"> {% comment %} criar segundo grupo, dentro do grupo de modelos mais frequentes {% endcomment %}
+                                        <a href="#" class="nav-link">
+                                            <i class="nav-icon {{ app.icon }}"></i>
+                                            <p>Auxiliar <i class="fas fa-angle-left right"></i></p> {% comment %} colocar nome do grupo 2 {% endcomment %}
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: none;">
+                                            {% for model in app.models %}
+                                                {% if model.name == 'Ano' or model.name == 'Município' or model.name == 'Tipo do Programa' or model.name == 'Tipo da Ação' or model.name == 'Tipo da Meta' or model.name == 'Tema' or model.name == 'Status da Meta' %} {% comment %} trocar igualdade por diferença {% endcomment %}
+                                                    <li class="nav-item">
+                                                        <a href="{% if model.url %}{{ model.url }}{% else %}javascript:void(0){% endif %}" class="nav-link">
+                                                            <i class="nav-icon {{ model.icon }}"></i>
+                                                            <p>{{ model.name }}</p>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    
+                            {% endif %}
+                        {% endfor %}
                             {% endif %}
                         </ul>
                     </nav>
