@@ -79,26 +79,16 @@
             <ul class="navbar-nav">
 
 				{% if jazzmin_settings.show_sidebar %}
-
-                    <li class="nav-item d-md-none ml-auto">
-    <a class="nav-link" data-widget="pushmenu" href="#" role="button" data-collapsed="true">
-        <i class="fas fa-bars"></i>
-    </a>
-</li>
-
-<li class="nav-item d-none d-md-block">
-    <div class="navbar-brand">
-        <img src="{% static jazzmin_settings.site_logo %}" alt="{{ jazzmin_settings.site_header }} Logo" class="{{ jazzmin_settings.site_logo_classes }} brand-image" style="margin-left: auto; margin-right: 15px;"> <!-- Adjust the margin as needed -->
-    </div>
-</li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    </li>
                 {% else %}
                     <li class="nav-item">
                         <a href="{% url 'admin:index' %}" class="brand-link">
-                            <img src="{% static jazzmin_settings.site_logo %}" alt="{{ jazzmin_settings.site_header }} Logo" class="{{ jazzmin_settings.site_logo_classes }} brand-image" style="margin: 0 0 0 5px;">
+                            <img src="{% static jazzmin_settings.site_logo %}" alt="{{ jazzmin_settings.site_header }} Logo" class="{{ jazzmin_settings.site_logo_classes }} brand-image" style="opacity: .8; margin: 0 0 0 5px;">
                         </a>
                     </li>
                 {% endif %}
-				<!---->
 
                 {% get_top_menu user request.current_app|default:"admin" as top_menu %}
                 {% for link in top_menu %}
