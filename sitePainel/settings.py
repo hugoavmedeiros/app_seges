@@ -28,8 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'appPainel',
+    'reuniao',
     'import_export',
-#    'smart_selects',
 ]
 
 MIDDLEWARE = [
@@ -229,6 +229,8 @@ JAZZMIN_SETTINGS = {
         "appPainel.Tipo": "fas fa-list",
         "appPainel.Meta": "fas fa-chart-bar",
         "appPainel.Etapa": "fas fa-chart-bar",
+        "reuniao.Reuniao": "fas fa-handshake",
+        "reuniao.Encaminhamento": "fas fa-list",
     },
     
     "default_icon_children": "fas fa-square",
