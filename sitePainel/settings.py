@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'appPainel',
-    "import_export",
+    'import_export',
 #    'smart_selects',
 ]
 

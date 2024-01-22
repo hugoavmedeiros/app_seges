@@ -5,6 +5,7 @@ __pycache__
 
 # Env
 .ve
+ve
 .env
 myvenv/
 venv/
