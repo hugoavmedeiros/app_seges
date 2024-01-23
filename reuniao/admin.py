@@ -40,14 +40,16 @@ class ReuniaoAdmin(ImportExportModelAdmin): # lista_display permite mostrar camp
 class EncaminhamentoAdmin(ImportExportModelAdmin): # lista_display permite mostrar campos customizados
     list_display = (
         "reuniao",
+        'get_data',
         "assunto",
         "encaminhamento",
         "prazo",
         "devolutiva",
         )
     list_filter = (
-        "reuniao", 
+        "reuniao__politica",
         "assunto", 
+        "reuniao__data",
         VencimentoProximoFilter
         ) # cria filtros
     list_editable = (
@@ -55,3 +57,8 @@ class EncaminhamentoAdmin(ImportExportModelAdmin): # lista_display permite mostr
         "prazo",
         "devolutiva",
         ) # permite editar do preview
+    
+    def get_data(self, obj):
+        return obj.reuniao.data
+
+    get_data.short_description = 'Data'
