@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>Título da página</title>
+    <meta charset="utf-8">
+  </head>
+  
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'reuniao/css/style.css' %}">
+
+{% block content %}
+
+<body>
+
+<form method="get" action="{% url 'lista_encaminhamentos' %}">
+    {{ form.as_p }}
+    <input type="submit" value="Filtrar">
+</form>
+
+<div class="responsive-table">
+    <table class="contacts-table">
+      <caption class="table-caption ">
+        Lista de Encaminhamentos
+      </caption>
+
+      <thead>
+        <tr class="table-row table-row-header">
+          <th class="table-header">ID</th>
+          <th class="table-header">Reunião</th>
+          <th class="table-header">Data</th>
+          <th class="table-header">Assunto</th>
+          <th class="table-header">Encaminhamento</th>
+          <th class="table-header">Prazo</th>
+          <th class="table-header">Devolutiva</th>
+        </tr>
+      </thead>  
+    
+      <tbody>
+        {% for encaminhamento in encaminhamentos %}
+          <tr class="table-row">
+            <td class="table-cel">
+              
+                {{ encaminhamento.id }}
+              </a>
+            </td>
+            <td class="table-cel">
+              {{ encaminhamento.reuniao }}
+            </td>
+            <td class="table-cel">
+              {{ encaminhamento.reuniao.data }}
+            </td>
+            <td class="table-cel">
+              {{ encaminhamento.assunto }}
+            </td>
+            <td class="table-cel">
+              {{ encaminhamento.encaminhamento }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>  
+
+</table>
+
+</div>
+
+{% endblock content %}
+
+<script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.contacts-table').DataTable();
+    });
+</script>
+
+</body>
+</html>

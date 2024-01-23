@@ -143,6 +143,7 @@ STATIC_URL = '/static/'
 #STATICFILES_DIRS = ('static',)
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'templates/admin'),
+    os.path.join(BASE_DIR, 'reuniao', 'static'),
       'static',  # Include shared static files
 ]
 # Default primary key field type
