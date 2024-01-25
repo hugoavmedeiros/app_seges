@@ -1,66 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <title>Título da página</title>
-    <meta charset="utf-8">
-  </head>
-  
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-WinySjvph6HTMRk5VGT5B5Ri6XEj6gS2V5tu1Q5iF56UAO1ptVToK8DJCnlv3VoGmNRiSyMvQ3G93+U3yXaNnw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.min.css">
+</head>
+
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'reuniao/css/style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'reuniao/css/lista_encaminhamentos.css' %}">
 
 {% block content %}
 
 <body>
 
-<form method="get" action="{% url 'lista_encaminhamentos' %}">
-    {{ form.as_p }}
-    <input type="submit" value="Filtrar">
-</form>
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="brand">
+            <a href="{% url 'reuniao:index' %}">
+                <img src="{% static 'reuniao/imagens/seplagtransparente_original.png' %}" alt="Logo" class="logo">
+            </a>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="{% url 'reuniao:index' %}">
+                    <i class="fas fa-home"></i> Início
+                </a>
+            </li>
+            <!-- Adicione mais itens de menu conforme necessário -->
+        </ul>
+    </div>
+</nav>
+
+<div class="filter-box">
+    <form method="get" action="{% url 'reuniao:lista_encaminhamentos' %}" class="filter-form">
+        {{ form.as_p }}
+        <div class="filter-button-container">
+            <input type="submit" value="Filtrar" class="filter-button">
+        </div>
+        <button>
+            <a href="{% url 'reuniao:lista_encaminhamentos' %}" class="clear-button">Limpar Filtros</a>
+        </button>
+    </form>
+</div>
 
 <div class="responsive-table">
     <table class="contacts-table">
-      <caption class="table-caption ">
-        Lista de Encaminhamentos
-      </caption>
+        <caption class="table-caption ">
+            Lista de Encaminhamentos
+        </caption>
 
-      <thead>
+        <thead>
         <tr class="table-row table-row-header">
-          <th class="table-header">ID</th>
-          <th class="table-header">Reunião</th>
-          <th class="table-header">Data</th>
-          <th class="table-header">Assunto</th>
-          <th class="table-header">Encaminhamento</th>
-          <th class="table-header">Prazo</th>
-          <th class="table-header">Devolutiva</th>
+            <th class="table-header">ID</th>
+            <th class="table-header">Reunião</th>
+            <th class="table-header">Data</th>
+            <th class="table-header">Assunto</th>
+            <th class="table-header">Encaminhamento</th>
+            <th class="table-header">Prazo</th>
+            <th class="table-header">Devolutiva</th>
         </tr>
-      </thead>  
-    
-      <tbody>
-        {% for encaminhamento in encaminhamentos %}
-          <tr class="table-row">
-            <td class="table-cel">
-              
-                {{ encaminhamento.id }}
-              </a>
-            </td>
-            <td class="table-cel">
-              {{ encaminhamento.reuniao }}
-            </td>
-            <td class="table-cel">
-              {{ encaminhamento.reuniao.data }}
-            </td>
-            <td class="table-cel">
-              {{ encaminhamento.assunto }}
-            </td>
-            <td class="table-cel">
-              {{ encaminhamento.encaminhamento }}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>  
+        </thead>
 
-</table>
+        <tbody>
+        {% for encaminhamento in encaminhamentos %}
+        <tr class="table-row">
+            <td class="table-cel">
+                {{ encaminhamento.id }}
+            </td>
+            <td class="table-cel">
+                {{ encaminhamento.reuniao }}
+            </td>
+            <td class="table-cel">
+                {{ encaminhamento.reuniao.data }}
+            </td>
+            <td class="table-cel">
+                {{ encaminhamento.assunto }}
+            </td>
+            <td class="table-cel">
+                {{ encaminhamento.encaminhamento }}
+            </td>
+            <td class="table-cel">
+                {{ encaminhamento.prazo }}
+            </td>
+            <td class="table-cel">
+                {{ encaminhamento.devolutiva }}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
 
 </div>
 
@@ -69,7 +101,12 @@
 <script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('.contacts-table').DataTable();
+        $('.contacts-table').DataTable({
+            "paging": true,         // Ativar paginação
+            "ordering": true,       // Ativar ordenação
+            "info": true,           // Mostrar informações de página
+            "searching": true       // Ativar pesquisa
+        });
     });
 </script>
 

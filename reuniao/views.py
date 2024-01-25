@@ -1,3 +1,4 @@
+#reuniao/views.py
 from django.shortcuts import render
 
 from django.views.generic import ListView
@@ -5,6 +6,8 @@ from .models import Encaminhamento, Reuniao
 from django.http import HttpResponse
 from .forms import EncaminhamentoFilterForm
 
+def index(request):
+    return render(request, 'reuniao/index.html')
 
 class EncaminhamentoListView(ListView):
     model = Encaminhamento

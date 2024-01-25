@@ -1,0 +1,228 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-WinySjvph6HTMRk5VGT5B5Ri6XEj6gS2V5tu1Q5iF56UAO1ptVToK8DJCnlv3VoGmNRiSyMvQ3G93+U3yXaNnw=="
+crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub SEPLAG-PE</title>
+
+    <style>
+                
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        line-height: 1.5;
+        font-size: var(--small-font-size);
+        color: var(--clr-black);
+        -webkit-font-smoothing: antialiased;
+        /* background: var(--clr-light-gray); */
+        background: var(--clr-light-gray);
+      }
+        
+        .navbar {
+            background-color: #fff;
+            padding: 10px 0;
+            width: 100%;
+        }
+        
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .brand a {
+            display: flex;
+            align-items: center;
+            color: #000; /* Cor do texto */
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .logo {
+            max-width: 200px; 
+            margin-right: 10px;
+            height: auto;
+        }
+
+        .logo-container {
+            text-align: center;
+        }        
+        
+        .nav-list {
+            list-style: none;
+            display: flex;
+        }
+        
+        .nav-item {
+            margin-right: 20px;
+        }
+        
+        .nav-item a {
+            color: #000; /* Cor do texto */
+            text-decoration: none;
+        }
+        
+        .blog-wrapper{
+            padding:15px;
+            display:flex;
+            flex-direction:row;
+            justify-content:center;
+            flex-wrap:wrap;
+            .blog-card{
+              @include transition(.3s);
+              max-width:300px;
+              margin:15px;
+              background:#fff;
+              border:1px solid #fff;
+              text-align:center;
+              cursor:pointer;
+              &:hover{
+                box-shadow: 0 3px 10px 0 rgba(0,0,0,.1);
+                .card-img{
+                  img{
+                    opacity:0.8;
+                  }
+                }
+              }
+              .card-img{
+                position:relative;
+                text-align:center;
+                background:#5bc0de;
+                img{
+                  @include transition(.3s);
+                  max-height:100px;
+                  width:100%;
+                  border-bottom:4px solid #5bc0de;
+                }
+                &:before{
+                  content:'';
+                  position: absolute;
+                  bottom: -8px;
+                  left: 50%;
+                  margin-left: -10px;
+                  width: 0;
+                  height: 0;
+                  border-top: solid 10px #5bc0de;
+                  border-left: solid 10px transparent;
+                  border-right: solid 10px transparent;
+                }
+                h1{
+                  position:absolute;
+                  margin:0;
+                  font-size:42px;
+                  bottom:15px;
+                  width:100%;
+                  color:#fff;
+                  font-family: "Font Awesome 5 Free", sans-serif;
+                }
+              }
+              .card-details{
+                margin-top:30px;
+                font-family: "Font Awesome 5 Free", sans-serif;
+                color:#3C3C3C;
+                span{   
+                  padding:0 30px;
+                  i{
+                    margin-right:5px;
+                  }
+                  
+                }
+              }
+              .card-text{
+                padding:30px 15px;
+                font-family: "Font Awesome 5 Free", sans-serif;
+                line-height:22px;
+              }
+              .read-more{
+                @include transition(.3s);
+                display:inline;
+                width:auto;
+                text-align:center;
+                {% comment %} text-transform:uppercase; {% endcomment %}
+                background:#5bc0de;
+                color:#fff;
+                padding:15px;
+                margin-bottom:30px;
+                font-family: "Font Awesome 5 Free", sans-serif;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                text-decoration: none;
+
+                a {
+                    color: #fff; 
+                    text-decoration: none; 
+                }
+
+                &:hover{
+                  background: darken(#5bc0de,20%);
+                }
+              }
+            }
+          }
+
+    </style>
+    
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="brand">
+                <a href="{% url 'reuniao:index' %}">
+                    <img src="{% static 'reuniao/imagens/seplagtransparente_original.png' %}" alt="Logo" class="logo">
+                </a>
+            </div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="{% url 'reuniao:index' %}">
+                        <i class="fas fa-home"></i> Início
+                    </a>
+                </li>
+                <!-- Adicione mais itens de menu conforme necessário -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="blog-wrapper">
+        <div class="blog-card">
+          <div class="card-img"><img src="{% static 'reuniao/imagens/snap_app_seges.png' %}">
+            <h1> </h1>
+          </div>
+            <div class="card-text"><p></p></div>
+            <button class="read-more">
+                <a href="{% url 'admin:index' %}">App SEGES</a>
+            </button>
+        </div>
+    
+        <div class="blog-card">
+          <div class="card-img"><img src="{% static 'reuniao/imagens/snap_app_estiagem.png' %}">
+          <h1> </h1>
+          </div>
+          <div class="card-text"><p></p></div>
+          <button class="read-more">
+              <a href="https://projesp.seplag.pe.gov.br/apps/estiagem/">App Estiagem</a>
+          </button>
+        </div>
+
+        <div class="blog-card">
+          <div class="card-img"><img src="{% static 'reuniao/imagens/snap_app_seges.png' %}">
+            <h1> </h1>
+          </div>
+            <div class="card-text"><p></p></div>
+            <button class="read-more">
+              <a href="{% url 'reuniao:lista_encaminhamentos' %}">Encaminhamentos</a>
+            </button>
+        </div>
+
+</body>
+</html>
