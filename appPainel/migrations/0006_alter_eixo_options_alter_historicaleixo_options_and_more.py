@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('appPainel', '0005_remove_historicalmonitoramentosubetapa_etapa_and_more'),
+        ('appPainel', '0003_historicalmonitoramentosubetapa_etapa_and_more'),
     ]
 
     operations = [
