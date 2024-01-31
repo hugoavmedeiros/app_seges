@@ -1,6 +1,10 @@
 from pathlib import Path
 import os, inspect
+from dotenv import dotenv_values
 import django_dyn_dt
+
+# ENV VALUES
+ENV = dotenv_values('.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9x345=z3oc^z_bxx0&@fp#9%-vj+im-$7kt@@ssdb2sxumeyb#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = ENV['DEBUG']
 CSRF_TRUSTED_ORIGINS = ['https://*.seplag.pe.gov.br', 'https://*.127.0.0.1']
 ALLOWED_HOSTS = ["*"]
 CSRF_COOKIE_SECURE = False
@@ -75,26 +79,14 @@ DYN_DB_PKG_ROOT = os.path.dirname( inspect.getfile( django_dyn_dt ) )
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-if os.environ.get('ENV') == "PROD":
+if ENV['NAME']:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'painel_prod',
-            'USER': 'ncd_seplag',
-            'PASSWORD': 'seplagncd',
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
-    }
-
-elif os.environ.get('ENV') == "DEV":
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'painel_de_controle',
-            'USER': 'postgres',
-            'PASSWORD': 'post1234',
-            'HOST': 'localhost',
+            'NAME': ENV['NAME'],
+            'USER': ENV['USER'],
+            'PASSWORD': ENV['PASSWORD'],
+            'HOST': ENV['HOST'],
             'PORT': '5432',
         }
     }
