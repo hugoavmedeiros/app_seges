@@ -1,3 +1,6 @@
+# dot-env file
+.env
+
 # Python
 *.pyc
 *~
@@ -9,7 +12,6 @@ cargas/
 # Env
 .ve
 ve
-.env
 myvenv/
 venv/
 env/
